@@ -23,7 +23,7 @@ void main()
 	ZeroMemory(&sa, sizeof(sa));
 	sa.sin_family = AF_INET;
 	sa.sin_port = htons(10000); // 포트번호 10000
-	sa.sin_addr.s_addr = inet_addr("192.168.0.12"); // 서버 아이피로 설정, 내 아이피 192.168.0.117, inet_ntoa : 네트워크 바이트 정렬 방식의 4바이트 주소를 문자열주소로 표현
+	sa.sin_addr.s_addr = inet_addr("192.168.0.117"); // 서버 아이피로 설정, 내 아이피 192.168.0.117, inet_ntoa : 네트워크 바이트 정렬 방식의 4바이트 주소를 문자열주소로 표현
 
 	int Ret = connect(ConnectSock, (sockaddr*)&sa, sizeof(sa)); // 커넥트함수의 리턴 설정
 	if (Ret == SOCKET_ERROR) // 커넥트가 오류나면 리턴

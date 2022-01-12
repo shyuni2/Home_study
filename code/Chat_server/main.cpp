@@ -51,18 +51,18 @@ void main()
 	SAddr.sin_addr.s_addr = htonl(INADDR_ANY); // 아이피주소를 나타냄, 서버는 다수의 클라가 접속해야하기때문에 아이피 지정안하고, INADDR_ANY 내컴퓨터로 들어오는애 다받겠다 라는 매크로함수
 
 	// 바인드 작업
-	int Ret = bind(ListenSock, (sockaddr*)&SAddr, sizeof(SAddr)); // bind(클라이언트 접속을 수용할 목적으로 만든 소켓, 소켓주소 구조체, 소켓주소 구조체 길이
+	int ret = bind(ListenSock, (sockaddr*)&SAddr, sizeof(SAddr)); // bind(클라이언트 접속을 수용할 목적으로 만든 소켓, 소켓주소 구조체, 소켓주소 구조체 길이
 																 // 성공 = 0, 실패 = SOCKET_ERROR
-	if (Ret == SOCKET_ERROR) return; // 바인드함수 리턴값이 에러면 리턴
+	if (ret == SOCKET_ERROR) return; // 바인드함수 리턴값이 에러면 리턴
 	// 리슨 작업
-	Ret = listen(ListenSock, SOMAXCONN); // listen(bind함수에 의해 아이피주소와 지역포트번호가 설정된 소켓, 접속가능한 클라이언트 개수)
+	ret = listen(ListenSock, SOMAXCONN); // listen(bind함수에 의해 아이피주소와 지역포트번호가 설정된 소켓, 접속가능한 클라이언트 개수)
 										  // SOMAXCONN : 지원가능한 최대값 사용
-	if (Ret == SOCKET_ERROR) return; // 리슨함수 리턴값이 에러면 리턴
+	if (ret == SOCKET_ERROR) return; // 리슨함수 리턴값이 에러면 리턴
 
 	SOCKADDR_IN ClientAddr; // 위에서도 썼지만 함수인자로 사용할때는 항상 주소값을 전달하며 반드시 포인터형으로 반환해서 사용해야함
 	int AddrC = sizeof(ClientAddr); // 클라이언트주소를 담는 변수
 
-	cout << "서버 연결됨 >" << endl; // 서버가 연결됐을때 출력하는 메세지
+	cout << "서버 가동중 >" << endl; // 서버가 연결됐을때 출력하는 메세지
 
 	// 논블로킹 소켓 만들기
 	u_long on = 1; // u_long : 바이트 정렬함수
@@ -100,7 +100,7 @@ void main()
 			User user;
 			user.set(ClientSock, ClientAddr);
 			userlist.push_back(user); // 유저리스트 뒤에 유저 푸쉬백
-			cout << "ip =" << inet_ntoa(ClientAddr.sin_addr) << "port =" << ntohs(ClientAddr.sin_port) << " ==> Log In" << endl; // inet_ntoa : 네트워크 바이트 정렬 방식의 4바이트 주소를 문자열주소로 표현
+			cout << user.user_name << ", ip = " << inet_ntoa(ClientAddr.sin_addr) << "port = " << ntohs(ClientAddr.sin_port) << " ==> 접속성공" << endl; // inet_ntoa : 네트워크 바이트 정렬 방식의 4바이트 주소를 문자열주소로 표현
 			// 논블로킹소켓 만들기
 			u_long on = 1;
 			ioctlsocket(ClientSock, FIONBIO, &on);
@@ -120,18 +120,18 @@ void main()
 																	 // 성공 : 받은 바이트수 또는 0, 실패 : SOCKET_ERROR
 				if (RecvByte == 0) // RecvByte가 0이면 클라 나간거
 				{
-					cout << "ip = " << inet_ntoa(ClientAddr.sin_addr) << "port = " << ntohs(ClientAddr.sin_port) << " ==> Log Out" << endl;
-					break;
 					closesocket(user.user_sock);
 					Sockiter = userlist.erase(Sockiter);
+					cout << user.user_name << ", ip = " << inet_ntoa(ClientAddr.sin_addr) << "port = " << ntohs(ClientAddr.sin_port) << " ==> 접속종료" << endl;
+					continue; // 계속 진행 되어야 하니까 컨티뉴
 				}
 				if (RecvByte == SOCKET_ERROR) // 리시브함수가 에러일때
 				{
 					int Error = WSAGetLastError();
-					//cout << "Error Code = " << Error << endl; // 에러코드 출력하고
 					if (Error != WSAEWOULDBLOCK) // 에러가 WSAEWOULDBLOCK이 아니면
 					{
 						Sockiter = userlist.erase(Sockiter);
+						cout << user.user_name << ", ip = " << inet_ntoa(ClientAddr.sin_addr) << "port = " << ntohs(ClientAddr.sin_port) << " ==> 비정상 접속종료" << endl;
 					}
 					else // 에러가 WSAEWOULDBLOCK이면
 					{
@@ -158,7 +158,7 @@ void main()
 							{
 								closesocket(user.user_sock);
 								Senditer = userlist.erase(Senditer);
-								cout << user.user_name << "비정상 접속종료" << endl;
+								cout << user.user_name << ", ip = " << inet_ntoa(ClientAddr.sin_addr) << "port = " << ntohs(ClientAddr.sin_port) << " ==> 비정상 접속종료" << endl;
 							}
 							else // 에러가 WSAEWOULDBLOCK이면
 							{
