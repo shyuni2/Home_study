@@ -6,21 +6,30 @@
 #include "Packet.h"
 #pragma comment (lib, "ws2_32.lib")
 
-struct User
+int SendMsg(SOCKET sock, char* msg, WORD type)
 {
-	SOCKET u_Sock;
-	SOCKADDR_IN u_Addr;
-	string u_Name;
-	short u_Port;
-	void set(SOCKET USock, SOCKADDR_IN UAddr)
-	{
-		u_Sock = USock;
-		u_Addr = UAddr;
-		u_Name = inet_ntoa(UAddr.sin_addr);
-		u_Port = ntohs(UAddr.sin_port);
-	}
-};
-
+	// 1. 패킷 생성
+	UPACKET packet;
+	ZeroMemory(&packet, sizeof(packet));
+	packet.ph.len = strlen(msg) + PACKET_HEADER_SIZE;
+	packet.ph.type = type;
+	memcpy(packet.msg, msg, strlen(msg));
+	// 2. 패킷 전송
+	char* pMsg = (char*)&packet;
+	int SendSize = 0;
+	do {
+		int SendByte = send(sock, &pMsg[SendSize], packet.ph.len - SendSize, 0);
+		if (SendByte == SOCKET_ERROR)
+		{
+			if (WSAGetLastError() != WSAEWOULDBLOCK)
+			{
+				return -1;
+			}
+		}
+		SendSize += SendByte;
+	} while (SendSize < packet.ph.len);
+	return SendSize;
+}
 int SendPacketData(SOCKET sock, char* msg, WORD type)
 {
 	// 패킷 생성
@@ -47,6 +56,7 @@ int SendPacketData(SOCKET sock, char* msg, WORD type)
 }
 int RecvPacketData(SOCKET sock, UPACKET& RecvPacket)
 {
+	// 데이터 받기
 	int RecvSize = 0;
 	do {
 		int RecvByte = recv(sock, RecvPacket.msg, RecvPacket.ph.len - PACKET_HEADER_SIZE - RecvSize, 0);
@@ -63,6 +73,7 @@ int RecvPacketData(SOCKET sock, UPACKET& RecvPacket)
 			if (error != WSAEWOULDBLOCK)
 			{
 				cout << "비정상 접속종료" << endl;
+				return -1;
 			}
 			else
 			{
@@ -118,7 +129,7 @@ void main()
 	ZeroMemory(&sa, sizeof(sa));
 	sa.sin_family = AF_INET;
 	sa.sin_port = htons(10000);
-	sa.sin_addr.s_addr = inet_addr("192.168.0.117");
+	sa.sin_addr.s_addr = inet_addr("192.168.0.87");
 	int ret = connect(sock, (sockaddr*)&sa, sizeof(sa));
 	if (ret == SOCKET_ERROR)
 	{
@@ -168,19 +179,24 @@ void main()
 			{
 				break;
 			}
-			if (ret == 0)
-			{
-				continue;
-			}
 			if (ret == 1)
 			{
+				int ret = RecvPacketData(sock, packet);
+				if (ret < 0)
+				{
+					break;
+				}
+				if (ret == 0)
+				{
+					continue;
+				}
 				// 메세지 처리
 				Packet data;
 				data.m_uPacket = packet;
 				ChatMsg RecvData;
 				ZeroMemory(&RecvData, sizeof(RecvData));
 				data >> RecvData.index >> RecvData.name >> RecvData.age >> RecvData.message;
-				cout << "[" << RecvData.name << "]" << RecvData.message;
+				cout << "\n" << "[" << RecvData.name << "]" << RecvData.message;
 			}
 		}
 	}

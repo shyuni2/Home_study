@@ -20,6 +20,30 @@ struct User
 	}
 };
 
+int SendMsg(SOCKET sock, char* msg, WORD type)
+{
+	// 1. 패킷 생성
+	UPACKET packet;
+	ZeroMemory(&packet, sizeof(packet));
+	packet.ph.len = strlen(msg) + PACKET_HEADER_SIZE;
+	packet.ph.type = type;
+	memcpy(packet.msg, msg, strlen(msg));
+	// 2. 패킷 전송
+	char* pMsg = (char*)&packet;
+	int SendSize = 0;
+	do {
+		int SendByte = send(sock, &pMsg[SendSize], packet.ph.len - SendSize, 0);
+		if (SendByte == SOCKET_ERROR)
+		{
+			if (WSAGetLastError() != WSAEWOULDBLOCK)
+			{
+				return -1;
+			}
+		}
+		SendSize += SendByte;
+	} while (SendSize < packet.ph.len);
+	return SendSize;
+}
 int SendMsg(SOCKET sock, UPACKET& packet)
 {
 	char* pMsg = (char*)&packet;
@@ -88,7 +112,7 @@ void main()
 		if (ClientSock == SOCKET_ERROR)
 		{
 			int error = WSAGetLastError();
-			if (error == WSAEWOULDBLOCK)
+			if (error!= WSAEWOULDBLOCK)
 			{
 				cout << "ErrorCode = " << error << endl;
 				break;
