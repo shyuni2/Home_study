@@ -1,11 +1,11 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <iostream>
-#include <WinSock2.h>
-#include <list>
+#include <winsock2.h>
 #include <conio.h>
 #include "Packet.h"
-#pragma comment (lib, "ws2_32.lib")
+#pragma comment	(lib, "ws2_32.lib")
 
+// 방법 1
 int SendMsg(SOCKET sock, char* msg, WORD type)
 {
 	// 1. 패킷 생성
@@ -18,7 +18,8 @@ int SendMsg(SOCKET sock, char* msg, WORD type)
 	char* pMsg = (char*)&packet;
 	int SendSize = 0;
 	do {
-		int SendByte = send(sock, &pMsg[SendSize], packet.ph.len - SendSize, 0);
+		int SendByte = send(sock, &pMsg[SendSize],
+			packet.ph.len - SendSize, 0);
 		if (SendByte == SOCKET_ERROR)
 		{
 			if (WSAGetLastError() != WSAEWOULDBLOCK)
@@ -30,19 +31,20 @@ int SendMsg(SOCKET sock, char* msg, WORD type)
 	} while (SendSize < packet.ph.len);
 	return SendSize;
 }
+// 방법 2
 int SendPacketData(SOCKET sock, char* msg, WORD type)
 {
-	// 패킷 생성
-	Packet packet(type);
-	packet << 1 << "이승현" << (short)26 << msg;
-	Packet PacketTest(packet);
-	ChatMsg RecvData;
-	ZeroMemory(&RecvData, sizeof(RecvData));
-	PacketTest >> RecvData.index >> RecvData.name >> RecvData.age >> RecvData.message;
-	char* pData = (char*)&packet.m_uPacket;
+	// 1. 패킷 생성
+	Packet tPacket(type);
+	tPacket << 999 << "이승현" << (short)26 << msg;
+	Packet tPacketTest(tPacket);
+	ChatMsg recvdata;
+	ZeroMemory(&recvdata, sizeof(recvdata));
+	tPacketTest >> recvdata.index >> recvdata.name >> recvdata.age >> recvdata.message;
+	char* pData = (char*)&tPacket.m_uPacket;
 	int SendSize = 0;
-	do { 
-		int SendByte = send(sock, &pData[SendSize], packet.m_uPacket.ph.len, 0);
+	do {
+		int SendByte = send(sock, &pData[SendSize], tPacket.m_uPacket.ph.len - SendSize, 0);
 		if (SendByte == SOCKET_ERROR)
 		{
 			if (WSAGetLastError() != WSAEWOULDBLOCK)
@@ -51,28 +53,31 @@ int SendPacketData(SOCKET sock, char* msg, WORD type)
 			}
 		}
 		SendSize += SendByte;
-	} while (SendSize < packet.m_uPacket.ph.len); // 보낼 메세지 길이가 패킷헤더 길이보다 작을때까지 반복
+	} while (SendSize < tPacket.m_uPacket.ph.len); // 보낼 메세지 길이가 패킷헤더 길이보다 작을때까지 반복
 	return SendSize;
 }
-int RecvPacketData(SOCKET sock, UPACKET& RecvPacket)
+int RecvPacketHeader(SOCKET sock, UPACKET& recvPacket)
 {
-	// 데이터 받기
+	char szRecvBuffer[256] = { 0, };
+	//패킷헤더 받기
+	ZeroMemory(&recvPacket, sizeof(recvPacket));
+	bool bRun = true;
 	int RecvSize = 0;
 	do {
-		int RecvByte = recv(sock, RecvPacket.msg, RecvPacket.ph.len - PACKET_HEADER_SIZE - RecvSize, 0);
+		int RecvByte = recv(sock, szRecvBuffer, PACKET_HEADER_SIZE, 0);
 		RecvSize += RecvByte;
 		if (RecvByte == 0)
 		{
 			closesocket(sock);
-			cout << "접속종료" << endl;
+			cout << " 접속종료" << endl;
 			return -1;
 		}
 		if (RecvByte == SOCKET_ERROR)
 		{
-			int error = WSAGetLastError();
-			if (error != WSAEWOULDBLOCK)
+			int Error = WSAGetLastError();
+			if (Error != WSAEWOULDBLOCK)
 			{
-				cout << "비정상 접속종료" << endl;
+				cout << " 비정상 접속종료" << endl;
 				return -1;
 			}
 			else
@@ -81,38 +86,36 @@ int RecvPacketData(SOCKET sock, UPACKET& RecvPacket)
 			}
 		}
 	} while (RecvSize < PACKET_HEADER_SIZE);
+	memcpy(&recvPacket.ph, szRecvBuffer, PACKET_HEADER_SIZE);
 	return 1;
 }
-
-int RecvPacketHeader(SOCKET sock, UPACKET& RecvPacket) 
+int RecvPacketData(SOCKET sock, UPACKET& recvPacket)
 {
-	char szRecvBuffer[256] = { 0, };
-	// 패킷헤더 받기
-	ZeroMemory(&RecvPacket, sizeof(RecvPacket));
+	// 데이터 받기
 	int RecvSize = 0;
 	do {
-		int RecvByte = recv(sock, szRecvBuffer, PACKET_HEADER_SIZE, 0);
+		int RecvByte = recv(sock, recvPacket.msg, recvPacket.ph.len - PACKET_HEADER_SIZE - RecvSize, 0);
 		RecvSize += RecvByte;
 		if (RecvByte == 0)
 		{
 			closesocket(sock);
-			cout << "접속종료" << endl;
+			cout << " 접속종료" << endl;
 			return -1;
 		}
 		if (RecvByte == SOCKET_ERROR)
 		{
-			int error = WSAGetLastError();
-			if (error != WSAEWOULDBLOCK)
+			int Error = WSAGetLastError();
+			if (Error != WSAEWOULDBLOCK)
 			{
-				cout << "비정상 접속종료" << endl;
+				cout << " 비정상 접속종료" << endl;
+				return -1;
 			}
 			else
 			{
 				return 0;
 			}
 		}
-	} while (RecvSize < PACKET_HEADER_SIZE);
-	memcpy(&RecvPacket.ph.len, szRecvBuffer, PACKET_HEADER_SIZE);
+	} while (RecvSize < recvPacket.ph.len - PACKET_HEADER_SIZE);
 	return 1;
 }
 
@@ -125,17 +128,17 @@ void main()
 		return;
 	}
 	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
-	SOCKADDR_IN sa; // 함수인자로 사용할때는 항상 주소값을 전달하며 반드시 포인터형으로 반환해서 사용
+	SOCKADDR_IN sa;  // 함수인자로 사용할때는 항상 주소값을 전달하며 반드시 포인터형으로 반환해서 사용
 	ZeroMemory(&sa, sizeof(sa));
 	sa.sin_family = AF_INET;
-	sa.sin_port = htons(10000);
-	sa.sin_addr.s_addr = inet_addr("192.168.0.87");
+	sa.sin_port = htons(1);
+	sa.sin_addr.s_addr = inet_addr("192.168.219.105");
 	int ret = connect(sock, (sockaddr*)&sa, sizeof(sa));
 	if (ret == SOCKET_ERROR)
 	{
 		return;
 	}
-	cout << "접속 성공 >" << endl;
+	cout << "접속성공!" << endl;
 
 	// 논블로킹
 	u_long on = 1;
@@ -143,8 +146,7 @@ void main()
 	ioctlsocket(sock, FIONBIO, &on);
 
 	char szBuffer[256] = { 0, };
-	int end = 0;
-
+	int End = 0;
 	while (1)
 	{
 		if (_kbhit() == 1) // 키보드 입력받는 함수
@@ -152,51 +154,45 @@ void main()
 			int Value = _getche();
 			if (Value == '\r' && strlen(szBuffer) == 0)
 			{
-				cout << "정상 종료" << endl;
+				cout << "정상 종료됨.." << endl;
 				break;
 			}
 			if (Value == '\r')
 			{
+				// 방법 1
+				//int SendByte = SendMsg(sock, szBuffer, PACKET_CHAT_MSG);
+				// 방법 2
 				int SendByte = SendPacketData(sock, szBuffer, PACKET_CHAT_MSG);
 				if (SendByte < 0)
 				{
 					cout << "비정상 종료" << endl;
 					break;
 				}
-				end = 0;
+				End = 0;
 				ZeroMemory(szBuffer, sizeof(char) * 256);
 			}
 			else
 			{
-				szBuffer[end++] = Value;
+				szBuffer[End++] = Value;
 			}
 		}
 		else
 		{
 			UPACKET packet;
 			int ret = RecvPacketHeader(sock, packet);
-			if (ret < 0)
-			{
-				break;
-			}
+			if (ret < 0) break;
 			if (ret == 1)
 			{
 				int ret = RecvPacketData(sock, packet);
-				if (ret < 0)
-				{
-					break;
-				}
-				if (ret == 0)
-				{
-					continue;
-				}
+				if (ret < 0) break;
+				if (ret == 0) continue;
 				// 메세지 처리
 				Packet data;
 				data.m_uPacket = packet;
-				ChatMsg RecvData;
-				ZeroMemory(&RecvData, sizeof(RecvData));
-				data >> RecvData.index >> RecvData.name >> RecvData.age >> RecvData.message;
-				cout << "\n" << "[" << RecvData.name << "]" << RecvData.message;
+				ChatMsg recvdata;
+				ZeroMemory(&recvdata, sizeof(recvdata));
+				data >> recvdata.index >> recvdata.name >> recvdata.age >> recvdata.message;
+				cout << "\n" << "[" << recvdata.name << "]" << recvdata.message;
 			}
 		}
 	}

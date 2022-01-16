@@ -1,22 +1,23 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <iostream>
-#include <WinSock2.h>
+#include <winsock2.h>
 #include <list>
+#include <string>
 #include "Packet.h"
-#pragma comment (lib, "ws2_32.lib")
+#pragma comment	(lib, "ws2_32.lib")
 
 struct User
 {
-	SOCKET u_Sock;
-	SOCKADDR_IN u_Addr;
-	string u_Name;
-	short u_Port;
-	void set(SOCKET USock, SOCKADDR_IN UAddr)
+	SOCKET		m_Sock;
+	SOCKADDR_IN m_Addr;
+	string m_Name;
+	short       m_Port;
+	void set(SOCKET sock, SOCKADDR_IN addr)
 	{
-		u_Sock = USock;
-		u_Addr = UAddr;
-		u_Name = inet_ntoa(UAddr.sin_addr);
-		u_Port = ntohs(UAddr.sin_port);
+		m_Sock = sock;
+		m_Addr = addr;
+		m_Name = inet_ntoa(addr.sin_addr);
+		m_Port = ntohs(addr.sin_port);
 	}
 };
 
@@ -32,7 +33,8 @@ int SendMsg(SOCKET sock, char* msg, WORD type)
 	char* pMsg = (char*)&packet;
 	int SendSize = 0;
 	do {
-		int SendByte = send(sock, &pMsg[SendSize], packet.ph.len - SendSize, 0);
+		int SendByte = send(sock, &pMsg[SendSize],
+			packet.ph.len - SendSize, 0);
 		if (SendByte == SOCKET_ERROR)
 		{
 			if (WSAGetLastError() != WSAEWOULDBLOCK)
@@ -48,8 +50,9 @@ int SendMsg(SOCKET sock, UPACKET& packet)
 {
 	char* pMsg = (char*)&packet;
 	int SendSize = 0;
-	do { // do - while 쓴 이유 : 일단 메세지 보내야하기 때문에
-		int SendByte = send(sock, &pMsg[SendSize], packet.ph.len - SendSize, 0);
+	do {
+		int SendByte = send(sock, &pMsg[SendSize],
+			packet.ph.len - SendSize, 0);
 		if (SendByte == SOCKET_ERROR)
 		{
 			if (WSAGetLastError() != WSAEWOULDBLOCK)
@@ -58,11 +61,9 @@ int SendMsg(SOCKET sock, UPACKET& packet)
 			}
 		}
 		SendSize += SendByte;
-	} while (SendSize < packet.ph.len); // 보낼 메세지 길이가 패킷헤더 길이보다 작을때까지 반복
+	} while (SendSize < packet.ph.len);
 	return SendSize;
 }
-
-// 패킷을 추가해서 조금만 달라질뿐 기존과 변하는건 없다
 void main()
 {
 	WSADATA wsa;
@@ -71,50 +72,37 @@ void main()
 		return;
 	}
 	SOCKET ListenSock = socket(AF_INET, SOCK_STREAM, 0);
-	SOCKADDR_IN sa; // 함수인자로 사용할때는 항상 주소값을 전달하며 반드시 포인터형으로 반환해서 사용
+	SOCKADDR_IN sa;
 	ZeroMemory(&sa, sizeof(sa));
 	sa.sin_family = AF_INET;
-	sa.sin_port = htons(10000);
+	sa.sin_port = htons(1);
 	sa.sin_addr.s_addr = htonl(INADDR_ANY);
-	// 바인드
-	// bind(클라이언트 접속을 수용할 목적으로 만든 소켓, 소켓주소 구조체, 소켓주소 구조체 길이
 	int ret = bind(ListenSock, (sockaddr*)&sa, sizeof(sa));
-	if (ret == SOCKET_ERROR)
-	{
-		return;
-	}
-	// 리슨 
-	// listen(bind함수에 의해 아이피주소와 지역포트번호가 설정된 소켓, 접속가능한 클라이언트 개수)
+	if (ret == SOCKET_ERROR)  return;
 	ret = listen(ListenSock, SOMAXCONN);
-	if (ret == SOCKET_ERROR)
-	{
-		return;
-	}
+	if (ret == SOCKET_ERROR)  return;
 
 	SOCKADDR_IN ClientAddr;
 	int CALength = sizeof(ClientAddr);
 
-	cout << "서버 실행중 >" << endl;
+	cout << " - 서버 가동중 - " << endl;
 
-	// 논블로킹
 	u_long on = 1;
-	// ioctlsocket(논블로킹으로 만들 소켓, 소켓에대한 수행할 동작을 의미하는 커맨드, 0이면 블로킹모드가 되고 0이아닌값을 넣으면 논블로킹모드로 설정)
 	ioctlsocket(ListenSock, FIONBIO, &on);
 
-	// 배열을 사용하면 빠졌을떄 상황을 고려해야하기때문에 list 사용
-	list<User>userlist;
+	// 배열을 사용하면 빠졌을때 상황을 고려해야하기 때문에 list 사용
+	list<User> userlist;
 
-	//서버는 이작업이 반복되어야 실행하자마자 꺼지는 경우를 없앨수있음
+	// 서버는 이 작업이 반복되어야 실행하자마자 꺼지는 경우를 없앨수 있음
 	while (1)
 	{
 		SOCKET ClientSock = accept(ListenSock, (sockaddr*)&ClientAddr, &CALength);
-		// 클라 소켓
 		if (ClientSock == SOCKET_ERROR)
 		{
-			int error = WSAGetLastError();
-			if (error!= WSAEWOULDBLOCK)
+			int Error = WSAGetLastError();
+			if (Error != WSAEWOULDBLOCK)
 			{
-				cout << "ErrorCode = " << error << endl;
+				cout << "ErrorCode=" << Error << endl;
 				break;
 			}
 		}
@@ -123,43 +111,41 @@ void main()
 			User user;
 			user.set(ClientSock, ClientAddr);
 			userlist.push_back(user);
-			cout << "IP = " << inet_ntoa(ClientAddr.sin_addr) << "PORT = " << ntohs(ClientAddr.sin_port) << " ==> 접속중" << endl;
 
+			cout << "ip =" << inet_ntoa(ClientAddr.sin_addr) << ", port =" << ntohs(ClientAddr.sin_port) << " -> 접속" << endl;
 			u_long on = 1;
 			ioctlsocket(ClientSock, FIONBIO, &on);
-
-			cout << userlist.size() << "명 접속 중 입니다." << endl;
+			cout << " - " << userlist.size() << " 명 접속중 - " << endl;
 		}
 
-		// 유저리스트 관리, 여기서 패킷추가
 		if (userlist.size() > 0)
 		{
-			list<User>::iterator useriter;
-			for (useriter = userlist.begin(); useriter != userlist.end();)
+			list<User>::iterator iter;
+			for (iter = userlist.begin(); iter != userlist.end(); )
 			{
-				User user = *useriter;
+				User user = *iter;
 				char szRecvBuffer[256] = { 0, };
-				// 패킷헤더 받기
-				UPACKET RecvPacket;
-				ZeroMemory(&RecvPacket, sizeof(RecvPacket));
+				//패킷헤더 받기
+				UPACKET recvPacket;
+				ZeroMemory(&recvPacket, sizeof(recvPacket));
 				int RecvSize = 0;
 				do {
-					int RecvByte = recv(user.u_Sock, szRecvBuffer, PACKET_HEADER_SIZE, 0);
+					int RecvByte = recv(user.m_Sock, szRecvBuffer, PACKET_HEADER_SIZE, 0);
 					RecvSize += RecvByte;
-					if (RecvByte == 0) // 리시브된게 0이면 클라 나감
+					if (RecvByte == 0)
 					{
-						closesocket(user.u_Sock);
-						useriter = userlist.erase(useriter);
-						cout << "IP = " << inet_ntoa(ClientAddr.sin_addr) << "PORT = " << ntohs(ClientAddr.sin_port) << " ==> 접속종료" << endl;
-						continue; // 서버는 꺼지면 안됨
+						closesocket(user.m_Sock);
+						iter = userlist.erase(iter);
+						cout << "ip =" << inet_ntoa(ClientAddr.sin_addr) << ", port =" << ntohs(ClientAddr.sin_port) << " -> 접속종료" << endl;
+						continue; // 누가 나가도 서버는 꺼지면 안됨
 					}
 					if (RecvByte == SOCKET_ERROR)
 					{
-						int error = WSAGetLastError();
-						if (error != WSAEWOULDBLOCK)
+						int Error = WSAGetLastError();
+						if (Error != WSAEWOULDBLOCK)
 						{
-							useriter = userlist.erase(useriter);
-							cout << "IP = " << inet_ntoa(ClientAddr.sin_addr) << "PORT = " << ntohs(ClientAddr.sin_port) << " ==> 비정상 접속종료" << endl;
+							iter = userlist.erase(iter);
+							cout << "ip =" << inet_ntoa(ClientAddr.sin_addr) << ", port =" << ntohs(ClientAddr.sin_port) << " -> 비정상 접속종료" << endl;
 							break;
 						}
 						else
@@ -171,68 +157,71 @@ void main()
 
 				if (RecvSize == SOCKET_ERROR)
 				{
-					if (useriter != userlist.end())
+					if (iter != userlist.end())
 					{
-						useriter++;
+						iter++;
 					}
 					continue;
 				}
-				memcpy(&RecvPacket.ph, szRecvBuffer, PACKET_HEADER_SIZE);
 
+				memcpy(&recvPacket.ph, szRecvBuffer, PACKET_HEADER_SIZE);
 				// 데이터 받기
 				RecvSize = 0;
 				do {
-					int RecvByte = recv(user.u_Sock, RecvPacket.msg, RecvPacket.ph.len - PACKET_HEADER_SIZE - RecvSize, 0);
+					int RecvByte = recv(user.m_Sock, recvPacket.msg,
+						recvPacket.ph.len - PACKET_HEADER_SIZE - RecvSize, 0);
 					RecvSize += RecvByte;
 					if (RecvByte == 0)
 					{
-						closesocket(user.u_Sock);
-						useriter = userlist.erase(useriter);
-						cout << "IP = " << inet_ntoa(ClientAddr.sin_addr) << "PORT = " << ntohs(ClientAddr.sin_port) << " ==> 접속종료" << endl;
+						closesocket(user.m_Sock);
+						iter = userlist.erase(iter);
+						cout << "ip =" << inet_ntoa(ClientAddr.sin_addr) << ", port =" << ntohs(ClientAddr.sin_port) << " -> 접속종료" << endl;
 						continue;
 					}
 					if (RecvByte == SOCKET_ERROR)
 					{
-						int error = WSAGetLastError();
-						if (error != WSAEWOULDBLOCK)
+						int Error = WSAGetLastError();
+						if (Error != WSAEWOULDBLOCK)
 						{
-							useriter = userlist.erase(useriter);
-							cout << "IP = " << inet_ntoa(ClientAddr.sin_addr) << "PORT = " << ntohs(ClientAddr.sin_port) << " ==> 비정상 접속종료" << endl;
+							iter = userlist.erase(iter);
+							cout << "ip =" << inet_ntoa(ClientAddr.sin_addr) << ", port =" << ntohs(ClientAddr.sin_port) << " -> 비정상 접속종료" << endl;
 						}
 						else
 						{
-							useriter++;
+							iter++;
 						}
 					}
-				} while (RecvSize < RecvPacket.ph.len - PACKET_HEADER_SIZE); // 혹시모르는 잘린 데이터가 있을수도 있기 때문
+				} while (RecvSize < recvPacket.ph.len - PACKET_HEADER_SIZE);
 
 				Packet data;
-				data.m_uPacket = RecvPacket;
-				ChatMsg RecvData;
-				ZeroMemory(&RecvData, sizeof(RecvData));
-				data >> RecvData.index >> RecvData.name >> RecvData.age >> RecvData.message;
-				cout << "[" << RecvData.name << "]" << RecvData.message << endl;
+				data.m_uPacket = recvPacket;
+				ChatMsg recvdata;
+				ZeroMemory(&recvdata, sizeof(recvdata));
+				data >> recvdata.index >> recvdata.name >> recvdata.age >> recvdata.message;
 
-				// 패킷완성
+				cout << "\n" << "[" << recvdata.name << "]" << recvdata.message;
+
+				// 패킷 완성		
 				list<User>::iterator Senditer;
-				for (Senditer = userlist.begin(); Senditer != userlist.end();)
+				for (Senditer = userlist.begin();
+					Senditer != userlist.end(); )
 				{
 					User user = *Senditer;
-					int SendMsgSize = SendMsg(user.u_Sock, RecvPacket);
+					int SendMsgSize = SendMsg(user.m_Sock, recvPacket);
 					if (SendMsgSize < 0)
 					{
-						closesocket(user.u_Sock);
+						closesocket(user.m_Sock);
 						Senditer = userlist.erase(Senditer);
-						cout << "IP = " << inet_ntoa(ClientAddr.sin_addr) << "PORT = " << ntohs(ClientAddr.sin_port) << " ==> 비정상 접속종료" << endl;
+						cout << "ip =" << inet_ntoa(ClientAddr.sin_addr) << ", port =" << ntohs(ClientAddr.sin_port) << " -> 비정상 접속종료" << endl;
 					}
 					else
 					{
 						Senditer++;
 					}
 				}
-				if (Senditer != userlist.end())
+				if (iter != userlist.end())
 				{
-					Senditer++;
+					iter++;
 				}
 			}
 		}
