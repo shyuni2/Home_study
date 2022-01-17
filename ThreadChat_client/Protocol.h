@@ -1,33 +1,25 @@
 #pragma once
-#include <Windows.h>
+#include <windows.h>
+#define PACKET_HEADER_SIZE 4
 
-#pragma pack(push,1) // 모든게 1바이트 패킹이 들어감, 이 처리가 되어야지 문제가 안됨 pack~pop사이가 1바이트가됨
-// 앞으로 만들어내는 모든 구조체는 1바이트 패킹이 들어감 
-// 구조체를 이용하더라도 반드시 바이트단위로 통신이 되어야함, 구조체 크기가 달라지면 문자열 전송하는데 심각한 오류가남 
-
-typedef struct
-{
-	WORD len; // 길이
-	WORD type; // 타입
+#pragma pack(push, 1)
+typedef struct {
+	WORD len;
+	WORD type;
 }PACKET_HEADER;
 
-typedef struct // 방법 1>
-{
-	PACKET_HEADER ph; // 패킷헤더가 반드시 존재해야함
-	char msg[4096]; // 합산했을때 배열크기안에 못들어가면 문제가 있음, 패킷을 만들어내는 구조를 정의해놓고 사용
+typedef struct {
+	PACKET_HEADER	ph;
+	char			msg[4096];
 }UPACKET, * P_UPACKET;
 
-// 이 규칙을 안따르면 통신이 안됨, 수업은 어떤 메세지던 이 UPACKET을 이용하자
-
-struct ChatMsg // 방법 2> 
+struct ChatMsg
 {
-	long index; // 채팅방 번호
-	char name[20]; // 이름
-	short damage; // 나이
-	char message[2048]; // 메세지
+	long	index;
+	char	name[20];
+	short	damage;
+	char	message[256];
 };
+#pragma pack(pop)
 
-#pragma pack(pop) // 밑에껀 구조체 크기로됨
-
-#define PACKET_CHAT_MSG 1000
-#define PACKET_HEADER_SIZE 4
+#define PACKET_CHAT_MSG      1000

@@ -120,7 +120,7 @@ void main()
 	SOCKADDR_IN sa;
 	ZeroMemory(&sa, sizeof(sa));
 	sa.sin_family = AF_INET;
-	sa.sin_port = htons(10000);
+	sa.sin_port = htons(1);
 	sa.sin_addr.s_addr = htonl(INADDR_ANY);
 	int iRet = bind(ListenSock, (sockaddr*)&sa, sizeof(sa));
 	if (iRet == SOCKET_ERROR)

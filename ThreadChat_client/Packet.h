@@ -4,19 +4,18 @@
 
 using namespace std;
 
-// 패킷 데이터 진행방식
-// data << packet << index << name << damage << message ;
-// data >> packet >> index >> name >> damage >> message ; 순서대로 처리해줘야함, 이런 구조로 데이터를 주고받겠다는 뜻
-
+// Packet data;
+// data << header << index << name << damage << mesage;
+// data >> header >> index >> name >> damage >> mesage;
 class Packet
 {
 public:
-	char* m_Offset;
+	char*	m_pOffset;
+	char* c_str() { return m_pOffset; }
 	UPACKET m_uPacket;
+	void PutData(const char* pData, int Size);
+	void GetData(const char* pData, int Size);
 public:
-	void PutData(const char* pData, int Size); // 데이터 주고
-	void GetData(const char* pData, int Size); // 데이터 받기
-public: // 데이터형이 여러가지일수 있으니 데이터형에 따라서 연산자 오버로딩을 해준다
 	Packet& operator << (int data);
 	Packet& operator << (long data);
 	Packet& operator << (short data);
@@ -26,17 +25,17 @@ public: // 데이터형이 여러가지일수 있으니 데이터형에 따라서 연산자 오버로딩을 해
 	Packet& operator << (DWORD data);
 	Packet& operator << (string data);
 public:
-	Packet& operator >> (int data);
-	Packet& operator >> (long data);
-	Packet& operator >> (short data);
-	Packet& operator >> (float data);
-	Packet& operator >> (byte data);
+	Packet& operator >> (int& data);
+	Packet& operator >> (long& data);
+	Packet& operator >> (short& data);
+	Packet& operator >> (float& data);
+	Packet& operator >> (byte& data);
 	Packet& operator >> (char* data);
-	Packet& operator >> (DWORD data);
-	Packet& operator >> (string data);
+	Packet& operator >> (DWORD& data);
+	Packet& operator >> (string& data);
 public:
 	Packet();
-	Packet(WORD Type);
+	Packet(WORD iType);
 	Packet(const Packet& packet);
 	~Packet();
 };
