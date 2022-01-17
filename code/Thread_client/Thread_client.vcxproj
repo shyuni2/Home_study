@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{049ed9c2-6acf-4405-890a-6adec18201d2}</ProjectGuid>
-    <RootNamespace>ThreadChatserver</RootNamespace>
+    <ProjectGuid>{c4dd3ae9-7ea8-44f9-b8b7-252b7d93515c}</ProjectGuid>
+    <RootNamespace>Threadclient</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -78,8 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../../output/debug/</OutDir>
-    <IntDir>../../output/debug/ThreadChat_server</IntDir>
+    <OutDir>../../output/debug</OutDir>
+    <IntDir>../../output/debug/Thread_client</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -142,11 +142,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="NetUser.cpp" />
     <ClCompile Include="Packet.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NetUser.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="Protocol.h" />
   </ItemGroup>

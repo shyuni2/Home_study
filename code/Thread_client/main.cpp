@@ -12,13 +12,13 @@ HANDLE hConnectEvent; // 이벤트 핸들
 
 int SendMsg(SOCKET sock, char* msg, WORD type)
 {
-	// 1번 패킷 생성
+	// 1. 패킷 생성
 	UPACKET packet;
 	ZeroMemory(&packet, sizeof(packet));
 	packet.ph.len = strlen(msg) + PACKET_HEADER_SIZE;
 	packet.ph.type = type;
 	memcpy(packet.msg, msg, strlen(msg));
-	// 2번 패킷 전송 : 운영체제 sendbuffer(short바이트), recvbuffer
+	// 2. 패킷 전송 : 운영체제 sendbuffer(short바이트), recvbuffer
 	char* pMsg = (char*)&packet;
 	int SendSize = 0;
 	do {
@@ -36,7 +36,7 @@ int SendMsg(SOCKET sock, char* msg, WORD type)
 }
 int SendPacket(SOCKET sock, char* msg, WORD type)
 {
-	// 1번 패킷 생성
+	// 1. 패킷 생성
 	Packet tPacket(type);
 	tPacket << 999 << "이승현" << (short)50 << msg;
 	Packet tPacketTest(tPacket);
