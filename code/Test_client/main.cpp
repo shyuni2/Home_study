@@ -160,7 +160,7 @@ DWORD WINAPI RecvThread(LPVOID param)
 	SOCKET sock = (SOCKET)param;
 	while (1)
 	{
-		DWORD dwRet = WaitForSingleObject(hConnectEvent, INFINITE); // INFINITE 로 하면 이벤트 무한정 대기
+		DWORD dwRet = WaitForSingleObject(hConnectEvent, INFINITE); 
 		if (dwRet != WAIT_OBJECT_0) // WAIT_OBJECT_0 : 기다리던 이벤트가 시그널 된 경우
 		{
 			break;
@@ -197,11 +197,8 @@ void main()
 	cout << "잠시만 기다려주세요" << endl;
 
 	hConnectEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
-	// CreateEvent (보안속성 구조에대한 포인터, false면 자동리셋이벤트 true면 수동리셋이벤트, 이벤트 객체의 초기상태를 시그널 상태로 하고싶으면 true 논시그널상태로 하고싶으면 false, 이벤트 객체이름)
-	// 자동 리셋 이벤트 : 대기상태가 종료되면 자동으로 비신호 상태가 됨
-	// 수동 리셋 이벤트 : 스레드가 비신호상태로 만들때까지 신호를 유지함
-	hExecuteSemaphore = CreateSemaphore(NULL, 3, 3, L"Execute"); // 세마포어는 카운트가 가능함
-	// CreateSemaphore (NULL, 초기값 설정, 최대 카운트값, 생성되는 세마포어에 이름을 줄경우 사용)
+	hExecuteSemaphore = CreateSemaphore(NULL, 3, 3, L"Execute");
+	
 	if (WaitForSingleObject(hExecuteSemaphore, 0) == WAIT_TIMEOUT)
 	{
 		CloseHandle(hExecuteSemaphore);
@@ -218,23 +215,9 @@ void main()
 	// 쓰레드 생성, 위치는 상관없는데 소켓이 있어야 스레드가 생성될수 있기때문에 스레드 밑에 만들자
 	// win api방법
 	DWORD ThreadIdSend;
-	HANDLE hThreadSend = ::CreateThread(
-		0, // 보안속성, 0은 기본사이즈만 쓰겠다는 의미
-		0, // 스택 크기 지정, 0은 기본사이즈만 쓰겠다는 의미
-		SendThread, // 반환, 
-		(LPVOID)sock, // 소켓을 넘겨줘야 send를 함
-		0,// 쓰레드 만들자마자 일시킬래 or 대기시켜놓고 원하는 시점에 일시킬래? 정할수있는 자리, 0을 넣으면 쓰레드를 만들자마자 SendTread를 실행
-		&ThreadIdSend // 생성된 쓰레드에대한 인덱스를 반환해준다 , 종업원의 번호라고 생각
-	);
+	HANDLE hThreadSend = ::CreateThread(0, 0, SendThread, (LPVOID)sock, 0, &ThreadIdSend);
 	DWORD ThreadIdRecv;
-	HANDLE hThreadRecv = ::CreateThread(
-		0,
-		0, // 0은 기본사이즈만 쓰겠다는 의미
-		RecvThread, // 반환, 
-		(LPVOID)sock, // 소켓을 넘겨줘야 recv를 함
-		0,// 쓰레드 만들자마자 일시킬래 or 대기시켜놓고 원하는 시점에 일시킬래? 정할수있는 자리, 0을 넣으면 쓰레드를 만들자마자 RecvTread를 실행
-		&ThreadIdRecv // 생성된 쓰레드에대한 인덱스를 반환해준다 , 종업원의 번호라고 생각
-	);
+	HANDLE hThreadRecv = ::CreateThread(0, 0, RecvThread, (LPVOID)sock, 0, &ThreadIdRecv);
 
 	Sleep(1000); // 스위칭이 되게 대기함수
 
@@ -250,10 +233,10 @@ void main()
 	}
 	cout << "입장 성공!" << endl;
 
-	SetEvent(hConnectEvent); // 이벤트 세팅
+	SetEvent(hConnectEvent);
 
 	u_long on = 1;
-	ioctlsocket(sock, FIONBIO, &on); // 여기까진 동일함
+	ioctlsocket(sock, FIONBIO, &on); 
 
 	// 메인스레드 작업
 	while (1)

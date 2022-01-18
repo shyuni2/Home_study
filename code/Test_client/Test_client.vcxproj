@@ -142,9 +142,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NetUser.cpp" />
     <ClCompile Include="Packet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="NetUser.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="Protocol.h" />
   </ItemGroup>
