@@ -2,31 +2,7 @@
 
 list<NetUser> userlist;
 
-int SendMsg(SOCKET sock, char*msg, WORD type)
-{
-	// 1. 패킷 생성
-	UPACKET packet;
-	ZeroMemory(&packet, sizeof(packet));
-	packet.ph.len = strlen(msg)+PACKET_HEADER_SIZE;
-	packet.ph.type = type;
-	memcpy(packet.msg, msg, strlen(msg));
-	// 2. 패킷 전송
-	char* pMsg = (char*)&packet;
-	int iSendSize = 0;
-	do {
-		int iSendByte = send(sock, &pMsg[iSendSize], packet.ph.len - iSendSize, 0);
-		if (iSendByte == SOCKET_ERROR)
-		{
-			if (WSAGetLastError() != WSAEWOULDBLOCK)
-			{
-				return -1;
-			}
-		}
-		iSendSize += iSendByte;
-	} while (iSendSize < packet.ph.len);
-	return iSendSize;
-}
-int SendMsg(SOCKET sock, UPACKET& packet)
+int SendData(SOCKET sock, UPACKET& packet)
 {
 	char* pMsg = (char*)&packet;
 	int iSendSize = 0;
@@ -45,25 +21,25 @@ int SendMsg(SOCKET sock, UPACKET& packet)
 }
 int AddUser(SOCKET sock)
 {
-	SOCKADDR_IN clientAddr;
-	int iLen = sizeof(clientAddr);
-	SOCKET clientSock = accept(sock,
-		(sockaddr*)&clientAddr, &iLen);
-	if (clientSock == SOCKET_ERROR)
+	SOCKADDR_IN ClientAddr;
+	int iLen = sizeof(ClientAddr);
+	SOCKET ClientSock = accept(sock,
+		(sockaddr*)&ClientAddr, &iLen);
+	if (ClientSock == SOCKET_ERROR)
 	{		
 		return -1;
 	}
 	else
 	{
 		NetUser user;
-		user.set(clientSock, clientAddr);		
+		user.set(ClientSock, ClientAddr);		
 		userlist.push_back(user);
-		cout << "ip =" << inet_ntoa(clientAddr.sin_addr) << " port =" << ntohs(clientAddr.sin_port) << "접속" << endl;
+		cout << "ip =" << inet_ntoa(ClientAddr.sin_addr) << " port =" << ntohs(ClientAddr.sin_port) << "접속" << endl;
 		cout << userlist.size() << " 명 접속중 -" << endl;
 	}
 	return 1;
 }
-int RecvUser(NetUser& user)
+int RecvData(NetUser& user)
 {
 	char szRecvBuffer[1024] = { 0, };	
 	int iRecvByte = recv(user.m_Sock, szRecvBuffer, 1024, 0);
@@ -85,8 +61,8 @@ void main()
 	net.IniNetwork();
 	net.InitServer(SOCK_STREAM, 10000);	// TCP, 포트번호
 
-	SOCKADDR_IN clientAddr;
-	int iLen = sizeof(clientAddr);
+	SOCKADDR_IN ClientAddr;
+	int iLen = sizeof(ClientAddr);
 	cout<< "- 서버 가동중 -" << endl;
 
 	FD_SET rSet; // 누가 들어왔거나 메세지 도착했거나
@@ -104,8 +80,7 @@ void main()
 		// 설정
 		FD_SET(net.m_ListenSock, &rSet); // 리슨소켓에 누가 들어왔거나 메세지를 보냈다는 걸 확인함
 		list<NetUser>::iterator userIter;
-		for (userIter = userlist.begin();
-			 userIter != userlist.end();)
+		for (userIter = userlist.begin(); userIter != userlist.end();)
 		{
 			if ((*userIter).m_bConnect == false)
 			{
@@ -138,7 +113,7 @@ void main()
 		{
 			if (FD_ISSET(user.m_Sock, &rSet))
 			{
-				int iRet= RecvUser(user);
+				int iRet= RecvData(user);
 				if (iRet <= 0)
 				{
 					user.m_bConnect = false;					
@@ -156,7 +131,7 @@ void main()
 					{
 						for (NetUser& senduser : userlist)
 						{							
-							int iRet = SendMsg(senduser.m_Sock, (*iter).m_uPacket);							
+							int iRet = SendData(senduser.m_Sock, (*iter).m_uPacket);
 							if (iRet <= 0) // 리시브 값이 0보다 작거나 같으면 유저랑 연결 안됐다는 뜻
 							{
 								senduser.m_bConnect = false; // 연결 실패

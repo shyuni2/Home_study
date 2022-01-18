@@ -141,6 +141,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AsyncSelect.cpp" />
+    <ClCompile Include="NetUser.cpp" />
+    <ClCompile Include="Network.cpp" />
+    <ClCompile Include="Packet.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AsyncSelect.h" />
+    <ClInclude Include="NetUser.h" />
+    <ClInclude Include="Network.h" />
+    <ClInclude Include="Packet.h" />
+    <ClInclude Include="Protocol.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
