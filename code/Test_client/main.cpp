@@ -189,10 +189,10 @@ DWORD WINAPI RecvThread(LPVOID param)
 
 void main()
 {
-	// 입장할때 이름 설정
-	cout << "채팅방에서 사용할 이름을 입력해주세요 : " << endl;
+	// 입장할때 메세지
+	//cout << "채팅방에서 사용할 이름을 입력해주세요 : " << endl;
 	
-	cout << "안녕하세요!" << "님! 채팅방에 입장합니다" << endl;
+	cout << "안녕하세요 채팅방에 입장합니다" << endl;
 
 	cout << "잠시만 기다려주세요" << endl;
 

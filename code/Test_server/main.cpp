@@ -59,14 +59,14 @@ int RecvData(NetUser& user)
 	}
 	user.DispatchRead(szRecvBuffer, RecvByte);
 
-	// 채팅로그 (현재 ?뜸)
+	// 채팅로그 (현재 쓰레기값 뜸)
 	Packet data;
 	UPACKET recvPacket;
 	data.m_uPacket = recvPacket;
 	ChatMsg recvdata;
-	ZeroMemory(&recvdata, sizeof(recvdata));
+	//ZeroMemory(&recvdata, sizeof(recvdata));
 	data >> recvdata.index >> recvdata.name >> recvdata.age >> recvdata.message;
-	cout << "\n" << "[이승현]" << recvdata.message;
+	cout << "\n" << "[" << recvdata.name << "]" << recvdata.message << endl;
 	time_t t = time(NULL);
 	cout << ctime(&t);
 
