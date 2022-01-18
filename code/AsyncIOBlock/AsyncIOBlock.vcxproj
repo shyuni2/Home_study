@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{7b5551af-7746-4df9-9106-95776c6e5216}</ProjectGuid>
-    <RootNamespace>Selectclient</RootNamespace>
+    <ProjectGuid>{b7b7036b-ae10-464b-95c2-d9bc521c55d4}</ProjectGuid>
+    <RootNamespace>AsyncIOBlock</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -72,14 +72,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../../output/debug</OutDir>
-    <IntDir>../../output/debug/Select_client</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>../../output/debug</OutDir>
+    <IntDir>../../output/debug/AsyncIOBlock</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -141,19 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AsyncSelect.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="NetUser.cpp" />
-    <ClCompile Include="Network.cpp" />
-    <ClCompile Include="Packet.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="AsyncSelect.h" />
-    <ClInclude Include="main.h" />
-    <ClInclude Include="NetUser.h" />
-    <ClInclude Include="Network.h" />
-    <ClInclude Include="Packet.h" />
-    <ClInclude Include="Protocol.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
