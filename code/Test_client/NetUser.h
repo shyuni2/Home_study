@@ -2,13 +2,14 @@
 #include "Packet.h"
 #include <list>
 
+
 class NetUser
 {
 public:
 	bool m_Connect = false; // 연결상태
 	SOCKET m_Sock;
 	SOCKADDR_IN m_Addr;
-	string m_csName;
+	string m_cAddr;
 	short m_Port;
 	// 버퍼기능
 	char m_RecvBuffer[2048];

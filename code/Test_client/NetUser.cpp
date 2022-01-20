@@ -16,5 +16,14 @@ int NetUser::DispatchRead(char* RecvBuffer, int RecvByte)
 
 void NetUser::set(SOCKET sock, SOCKADDR_IN addr)
 {
+	m_Connect = true;
+	ZeroMemory(m_RecvBuffer, sizeof(char) * 2048);
+	m_PacketPos = 0;
+	m_WritePos = 0;
+	m_ReadPos = 0;
 
+	m_Sock = sock;
+	m_Addr = addr;
+	m_cAddr = inet_ntoa(addr.sin_addr);
+	m_Port = ntohs(addr.sin_port);
 }

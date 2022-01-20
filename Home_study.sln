@@ -55,6 +55,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AsyncIO", "code\AsyncIO\Asy
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AsyncIOBlock", "code\AsyncIOBlock\AsyncIOBlock.vcxproj", "{B7B7036B-AE10-464B-95C2-D9BC521C55D4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lib_winapi_client", "code\lib_winapi_client\lib_winapi_client.vcxproj", "{CD8DE18B-A5FA-4B60-8FE5-62DEEB4EF0B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -199,6 +201,14 @@ Global
 		{B7B7036B-AE10-464B-95C2-D9BC521C55D4}.Release|x64.Build.0 = Release|x64
 		{B7B7036B-AE10-464B-95C2-D9BC521C55D4}.Release|x86.ActiveCfg = Release|Win32
 		{B7B7036B-AE10-464B-95C2-D9BC521C55D4}.Release|x86.Build.0 = Release|Win32
+		{CD8DE18B-A5FA-4B60-8FE5-62DEEB4EF0B2}.Debug|x64.ActiveCfg = Debug|x64
+		{CD8DE18B-A5FA-4B60-8FE5-62DEEB4EF0B2}.Debug|x64.Build.0 = Debug|x64
+		{CD8DE18B-A5FA-4B60-8FE5-62DEEB4EF0B2}.Debug|x86.ActiveCfg = Debug|Win32
+		{CD8DE18B-A5FA-4B60-8FE5-62DEEB4EF0B2}.Debug|x86.Build.0 = Debug|Win32
+		{CD8DE18B-A5FA-4B60-8FE5-62DEEB4EF0B2}.Release|x64.ActiveCfg = Release|x64
+		{CD8DE18B-A5FA-4B60-8FE5-62DEEB4EF0B2}.Release|x64.Build.0 = Release|x64
+		{CD8DE18B-A5FA-4B60-8FE5-62DEEB4EF0B2}.Release|x86.ActiveCfg = Release|Win32
+		{CD8DE18B-A5FA-4B60-8FE5-62DEEB4EF0B2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -229,6 +239,7 @@ Global
 		{6A0D6616-5785-48EF-9A84-D3B7390347ED} = {AD09D710-5FEF-425A-BE84-E36569CD9AD7}
 		{5A8E1E4C-596C-478E-8DF1-F3A99577EB00} = {12D01330-80C8-46D2-8E6A-AD7C7D220FE6}
 		{B7B7036B-AE10-464B-95C2-D9BC521C55D4} = {12D01330-80C8-46D2-8E6A-AD7C7D220FE6}
+		{CD8DE18B-A5FA-4B60-8FE5-62DEEB4EF0B2} = {AD09D710-5FEF-425A-BE84-E36569CD9AD7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D0430E5-64CD-49E2-945E-1F752E0FC230}
