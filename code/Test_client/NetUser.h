@@ -1,7 +1,9 @@
 #pragma once
 #include "Packet.h"
 #include <list>
+#include <iostream>
 
+using namespace std;
 
 class NetUser
 {

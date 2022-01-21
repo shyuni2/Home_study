@@ -141,12 +141,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="AsyncSelect.cpp" />
     <ClCompile Include="NetUser.cpp" />
+    <ClCompile Include="NetWork.cpp" />
     <ClCompile Include="Packet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AsyncSelect.h" />
     <ClInclude Include="NetUser.h" />
+    <ClInclude Include="NetWork.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="Protocol.h" />
   </ItemGroup>
