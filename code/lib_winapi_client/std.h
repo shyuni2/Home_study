@@ -4,14 +4,22 @@
 #include <Windows.h>
 
 #include <iostream>
-
 #include <list>
 #include <vector>
 #include <string>
+
+#include <d3d11.h>
+
+#pragma comment	(lib, "ws2_32.lib")
+#pragma comment	(lib, "d3d11.lib")
 
 using namespace std;
 
 extern RECT m_rtWindow;
 extern HWND g_hWnd;
 
-#define WINRUN_START int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow) { SampleCore;
+#define GAME_START int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow){Sample core;}
+#define GAME_WIN(s,x,y) if (core.SetWinClass(hInstance) == FALSE) return 1; if (core.SetWindow(L#s, x, y) == FALSE) return 1; core.GameRun(); return 1;}
+#define SIMPLE_WIN() if (core.SetWinClass(hInstance) == FALSE) return 1; if (core.SetWindow() == FALSE) return 1; core.GameRun(); return 1;}
+#define GAME_RUN(s,x,y) GAME_START; GAME_WIN(s,x,y);
+#define RUN() GAME_START; SIMPLE_WIN();
