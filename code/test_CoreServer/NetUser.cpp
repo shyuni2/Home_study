@@ -50,8 +50,6 @@ void NetUser::set(SOCKET sock, SOCKADDR_IN addr)
 	m_PacketPos = 0;
 	m_WritePos = 0;
 	m_ReadPos = 0;
-	int m_WritePos;  // 현재의 저장 위치
-	int m_ReadPos;
 
 	m_Sock = sock;
 	m_Addr = addr;
