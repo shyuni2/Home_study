@@ -2,7 +2,7 @@
 #include <iostream>
 #include <math.h>
 
-struct TFloat2
+struct Float2
 {
 	union
 	{
@@ -10,7 +10,7 @@ struct TFloat2
 		float v[2];
 	};
 };
-class Vector2 : public TFloat2
+class Vector2 : public Float2
 {
 public:
 	Vector2();

@@ -11,7 +11,34 @@ int NetUser::DispatchRead(char* RecvBuffer, int RecvByte)
 		m_PacketPos = 0;
 		m_WritePos = m_ReadPos;
 	}
+	memcpy(&m_RecvBuffer[m_WritePos], RecvBuffer, RecvByte);
+	m_WritePos += RecvByte;
+	m_ReadPos += RecvByte;
 
+	if (m_ReadPos >= PACKET_HEADER_SIZE)
+	{
+		// 패킷 해석
+		UPACKET* pPacket = (UPACKET*)&m_RecvBuffer[m_PacketPos];
+
+		if (pPacket->ph.len <= m_ReadPos)
+		{
+			do {
+				Packet tPacket(pPacket->ph.type);
+				memcpy(&tPacket.m_uPacket, &m_RecvBuffer[m_PacketPos], pPacket->ph.len);
+				m_PacketPool.push_back(tPacket);
+
+				// 다음패킷 처리
+				m_PacketPos += pPacket->ph.len;
+				m_ReadPos -= pPacket->ph.len;
+				if (m_ReadPos < PACKET_HEADER_SIZE)
+				{
+					break;
+				}
+				pPacket = (UPACKET*)&m_RecvBuffer[m_PacketPos];
+			} while (pPacket->ph.len <= m_ReadPos);
+		}
+	}
+	return 1;
 }
 
 void NetUser::set(SOCKET sock, SOCKADDR_IN addr)

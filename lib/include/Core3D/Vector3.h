@@ -1,6 +1,6 @@
 #pragma once
 #include "Vector2.h"
-struct TFloat3
+struct Float3
 {
 	union
 	{
@@ -8,7 +8,7 @@ struct TFloat3
 		float v[3];
 	};
 };
-class Vector3 : public TFloat3
+class Vector3 : public Float3
 {
 public:
 	Vector3();

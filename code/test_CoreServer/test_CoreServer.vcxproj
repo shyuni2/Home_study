@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{cd8de18b-a5fa-4b60-8fe5-62deeb4ef0b2}</ProjectGuid>
-    <RootNamespace>libwinapiclient</RootNamespace>
+    <ProjectGuid>{23993081-00ea-4e72-bf82-6009480ecddc}</ProjectGuid>
+    <RootNamespace>testCoreServer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -79,7 +79,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../../output/debug</OutDir>
-    <IntDir>../../output/debug/lib_winapi_client</IntDir>
+    <IntDir>../../output/debug/test_CoreServer</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -127,9 +127,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy "*.h" "../../lib/include/lib_winapi_client"
-copy "..\\..\\output\\Debug\\lib_winapi_client.lib" "..\\..\\Lib\\"
-</Command>
+      <Command>copy "*.h" "../../lib/include/test_CoreServer"
+copy "..\\..\\output\\Debug\\test_CoreServer.lib" "..\\..\\Lib\\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -150,15 +149,16 @@ copy "..\\..\\output\\Debug\\lib_winapi_client.lib" "..\\..\\Lib\\"
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Core.h" />
-    <ClInclude Include="Device.h" />
-    <ClInclude Include="Window.h" />
-    <ClInclude Include="std.h" />
+    <ClCompile Include="NetUser.cpp" />
+    <ClCompile Include="Packet.cpp" />
+    <ClCompile Include="Server.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Core.cpp" />
-    <ClCompile Include="Device.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClInclude Include="NetUser.h" />
+    <ClInclude Include="Packet.h" />
+    <ClInclude Include="Protocol.h" />
+    <ClInclude Include="Server.h" />
+    <ClInclude Include="STDserver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

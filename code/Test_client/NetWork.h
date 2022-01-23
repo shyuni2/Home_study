@@ -9,7 +9,7 @@ public:
 	NetUser m_Chatuser;
 public:
 	bool InitNetWork();
-	bool CloseNetWort();
+	bool CloseNetWork();
 	bool InitServer(int protocol, int port, const char* ip);
 public:
 	int SendData(SOCKET sock, UPACKET& packet);

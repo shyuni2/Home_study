@@ -24,10 +24,7 @@ bool Core::CoreFrame()
 bool Core::CoreRender()
 {	
 	float color[4] = { 0.1543f, 0.23421f, 0.4323f,1.0f };
-	//float color[4] = { 1.1543f, 1.23421f, 1.4323f,1.0f };
-	m_pImmediateContext->ClearRenderTargetView(
-		m_pRenderTargetView,
-		color);
+	m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, color);
 	
 	// 백버퍼에 랜더링 한다.
 	Render();

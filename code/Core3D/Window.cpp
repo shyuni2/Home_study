@@ -4,7 +4,7 @@ RECT g_rtClient;
 HWND g_hWnd;
 Window* g_pWindow = nullptr;
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT  CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     g_pWindow->MsgProc(hWnd, msg, wParam, lParam);
     switch (msg)
@@ -18,7 +18,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     }
     return 0;
 }
-LRESULT Window::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT  Window::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     return 0;
 }
@@ -41,21 +41,31 @@ BOOL Window::SetWinClass(HINSTANCE hInstance)
     return TRUE;
 }
 
-BOOL Window::SeWindow(const WCHAR* szTitle, 
+BOOL Window::SetWindow(const WCHAR* szTitle, 
     int iClientWidth,
     int iClientHeight)
 {
     RECT rt = { 0,0, iClientWidth , iClientHeight };
-    AdjusWindowRect(&rt, WS_OVERLAPPEDWINDOW, FALSE);
+    AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, FALSE);
     // 2, 윈도우 생성
-    m_hWnd = CreateWindow(L"KGCA_Window", szTitle, WS_OVERLAPPEDWINDOW, 0, 0, rt.right - rt.left, rt.bottom - rt.top, NULL, NULL, m_hInstance, NULL);
+    m_hWnd = CreateWindow(
+        L"KGCA_Window",
+        szTitle,
+        WS_OVERLAPPEDWINDOW,
+        0, 0,
+        rt.right-rt.left, 
+        rt.bottom-rt.top, 
+        NULL,
+        NULL,
+        m_hInstance,
+        NULL);
     if (m_hWnd == NULL)
     {
         return FALSE;
     }
     g_hWnd = m_hWnd;
-    GetClienRect(m_hWnd, &m_rtClient);
-    GeWindowRect(m_hWnd, &m_rWindow);
+    GetClientRect(m_hWnd, &m_rtClient);
+    GetWindowRect(m_hWnd, &m_rtWindow);
     g_rtClient = m_rtClient;
 
     ShowWindow(m_hWnd, SW_SHOW);

@@ -1,3 +1,5 @@
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+
 #include "AsyncSelect.h"
 
 bool AsyncSelect::Connect(HWND hWnd, int protocol, int port, const char* ip)

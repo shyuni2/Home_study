@@ -15,6 +15,7 @@ public:
 	UPACKET m_uPacket;
 	void PutData(const char* pData, int Size);
 	void GetData(const char* pData, int Size);
+	void Reset();
 public:
 	Packet& operator << (int data);
 	Packet& operator << (long data);

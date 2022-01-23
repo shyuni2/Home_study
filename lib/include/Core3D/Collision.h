@@ -83,12 +83,12 @@ public:
 	static bool   RectToPoint(Rect rt, Vector2 v);
 	static CollisionType    RectToRect(Rect,Rect);
 	static Rect  UnionRect(Rect rt1, Rect rt2);
-	static bool  IntersecRect(Rect rt1, Rect rt2, Rect* rt);
+	static bool  IntersectRect(Rect rt1, Rect rt2, Rect* rt);
 	
 	static bool   BoxToPoint(Box rt, int x, int y, int z);
 	static bool   BoxToPoint(Box rt, Vector3 v);
 	static CollisionType    BoxToBox(Box, Box);
 	static Box   UnionBox(Box rt1, Box rt2);
-	static bool  IntersecBox(Box rt1, Box rt2, Box* rt);
+	static bool  IntersectBox(Box rt1, Box rt2, Box* rt);
 };
 

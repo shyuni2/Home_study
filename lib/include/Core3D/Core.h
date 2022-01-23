@@ -4,34 +4,34 @@
 class Core : public Device
 {
 public:
-	virtual bool Init()
+	virtual bool	Init()
 	{
 		return true;
-	}
-	virtual bool Frame()
+	};
+	virtual bool	Frame()
 	{
 		return true;
-	}
-	virtual bool Render()
+	};
+	virtual bool	Render()
 	{
 		return true;
-	}
-	virtual bool Release()
+	};
+	virtual bool	Release()
 	{
 		return true;
-	}
+	};
 
-public:
-	bool CoreInit();
+private:
+	bool CoreInit();	
 	bool CoreFrame();
 	bool CoreRender();
 	bool CoreRelease();
 
 public:
-	bool ChatRun();
+	bool	GameRun();
 
 public:
 	Core();
-	~Core();
+	virtual ~Core();
 };
 

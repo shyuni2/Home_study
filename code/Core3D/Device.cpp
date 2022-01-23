@@ -1,5 +1,4 @@
 #include "Device.h"
-
 HRESULT Device::InitDeivice()
 {
 	HRESULT hr = S_OK; 
@@ -8,7 +7,7 @@ HRESULT Device::InitDeivice()
 	SetViewport();
 	return hr;
 }
-bool Device::CreateDevice()
+bool	Device::CreateDevice()
 {
 	UINT Flags = 0;
 	D3D_FEATURE_LEVEL fl[]
@@ -26,7 +25,7 @@ bool Device::CreateDevice()
 	m_SwapChainDesc.SampleDesc.Count = 1;
 	m_SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	m_SwapChainDesc.BufferCount = 1;
-	m_SwapChainDesc.OutpuWindow = m_hWnd;
+	m_SwapChainDesc.OutputWindow = m_hWnd;
 	m_SwapChainDesc.Windowed = true;
 
 	HRESULT hr = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, Flags, fl, 1, D3D11_SDK_VERSION, &m_SwapChainDesc, &m_pSwapChain, &m_pd3dDevice, &m_FeatureLevel, &m_pImmediateContext);
@@ -36,7 +35,7 @@ bool Device::CreateDevice()
 	}	
 	return true;
 }
-bool Device::CreateRenderTargetView()
+bool	Device::CreateRenderTargetView()
 {
 	ID3D11Texture2D* backBuffer = nullptr;
 	m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
@@ -45,7 +44,7 @@ bool Device::CreateRenderTargetView()
 	m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, NULL);
 	return true;
 }
-bool Device::SetViewport()
+bool	Device::SetViewport()
 {	
 	// 뷰포트 세팅
 	//DXGI_SWAP_CHAIN_DESC swapDesc;
@@ -60,7 +59,7 @@ bool Device::SetViewport()
 	m_pImmediateContext->RSSetViewports(1, &m_ViewPort);
 	return true;
 }
-bool Device::CleapupDevice()
+bool	Device::CleapupDevice()
 {
 	if (m_pd3dDevice)m_pd3dDevice->Release();	// 디바이스 객체
 	if (m_pImmediateContext)m_pImmediateContext->Release();// 다비이스 컨텍스트 객체
@@ -80,6 +79,4 @@ Device::Device()
 	m_pRenderTargetView = nullptr;
 }
 Device::~Device()
-{
-
-}
+{}

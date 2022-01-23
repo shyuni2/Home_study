@@ -9,7 +9,7 @@ bool NetWork::InitNetWork()
 	}
 	return true;
 }
-bool NetWork::CloseNetWort()
+bool NetWork::CloseNetWork()
 {
 	closesocket(m_Sock);
 	WSACleanup();
