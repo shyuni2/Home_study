@@ -11,7 +11,7 @@ public:
 	SOCKET m_Sock;
 	SOCKADDR_IN m_Addr;
 	string m_csName;
-	short       m_iPort;
+	short m_iPort;
 	// 버퍼기능 추가
 	char m_szRecvBuffer[2048];
 	int  m_PacketPos; // 패킷의 시작주소

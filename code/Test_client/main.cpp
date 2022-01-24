@@ -11,7 +11,7 @@ bool main::Init()
 	SendMessageA(m_hUserChatBox, LB_ADDSTRING, 0, (LPARAM)"채팅시작!");
 
 	m_Net.InitNetWork();
-	m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, "192.168.0.12");
+	m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, "192.168.0.87");
 	return true;
 }
 bool main::Frame() 

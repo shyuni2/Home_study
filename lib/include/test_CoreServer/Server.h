@@ -15,5 +15,6 @@ public:
 	bool InitServer(int port);
 	bool Run();
 	bool Release();
+	virtual bool AddUser(SOCKET sock, SOCKADDR_IN CntAddr);
 };
 

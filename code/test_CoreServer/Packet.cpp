@@ -1,7 +1,8 @@
 #include "Packet.h"
 
+
 // 함수
-void Packet::PutData(const char* pData, int Size) // 데이터 주고
+void Packet::PutData( const char* pData, int Size) // 데이터 주고
 {
 	m_uPacket.ph.len += Size; 
 	memcpy(m_Offset, pData, Size);

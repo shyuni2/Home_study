@@ -43,8 +43,7 @@ int Server::BroadCast(NetUser& user)
 	if (user.m_PacketPool.size() > 0)
 	{
 		list<Packet>::iterator iter;
-		for (iter = user.m_PacketPool.begin();
-			iter != user.m_PacketPool.end(); )
+		for (iter = user.m_PacketPool.begin(); iter != user.m_PacketPool.end(); )
 		{
 			for (NetUser& senduser : m_Userlist)
 			{
@@ -59,6 +58,13 @@ int Server::BroadCast(NetUser& user)
 	}
 	return 1;
 }
+bool Server::AddUser(SOCKET sock, SOCKADDR_IN CntAddr)
+{
+	list<NetUser>::iterator useriter;
+
+	return true;
+}
+
 
 bool Server::InitServer(int port)
 {
