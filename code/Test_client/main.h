@@ -1,6 +1,7 @@
 #pragma once
 #include "AsyncSelect.h"
 #include "Core.h"
+#include "Window.h"
 
 class main : public Core
 {

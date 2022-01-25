@@ -57,10 +57,11 @@ LRESULT main::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		{
 		case 200:
 		{
+			NetUser user;
 			char buffer[MAX_PATH] = { 0, };
 			SendMessageA(m_hEdit, WM_GETTEXT, MAX_PATH, (LPARAM)buffer);
 			Packet tPacket(PACKET_CHAT_MSG);
-			tPacket << 999 << "ȫ�浿" << (short)50 << buffer;
+			tPacket << 999 << "[" << user.m_name << "]" << (short)50 << buffer;
 			m_Net.SendData(m_Net.m_Sock, tPacket.m_uPacket);
 
 			SendMessageA(m_hEdit, WM_SETTEXT, 0, (LPARAM)"");
@@ -71,4 +72,11 @@ LRESULT main::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return m_Net.MsgProc(hWnd, msg, wParam, lParam);
 }
 
-RUN();
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
+{
+	Window win;
+	if (win.SetWinClass(hInstance) == FALSE) return 1;
+	if (win.SetWindow(L"Win Sample") == FALSE) return 1;
+	win.WinRun();
+	return 1;
+}

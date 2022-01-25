@@ -17,6 +17,7 @@ public:
 	SOCKADDR_IN m_Addr;
 	string m_cAddr;
 	short m_Port;
+	char* m_name;
 	// 버퍼기능
 	char m_RecvBuffer[2048];
 	int m_PacketPos;

@@ -1,9 +1,7 @@
-#include "Window.h"
-
+#include "TWindow.h"
 RECT g_rtClient;
 HWND g_hWnd;
-Window* g_pWindow = nullptr;
-
+TWindow* g_pWindow = nullptr;
 LRESULT  CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     g_pWindow->MsgProc(hWnd, msg, wParam, lParam);
@@ -18,11 +16,11 @@ LRESULT  CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     }
     return 0;
 }
-LRESULT  Window::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT  TWindow::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     return 0;
 }
-BOOL Window::SetWinClass(HINSTANCE hInstance)
+BOOL TWindow::SetWinClass(HINSTANCE hInstance)
 {
     m_hInstance = hInstance;
     // 1, 윈도우 클래스 등록, 허가(운영체제)
@@ -31,7 +29,7 @@ BOOL Window::SetWinClass(HINSTANCE hInstance)
     wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInstance;
-    wc.lpszClassName = L"Window";
+    wc.lpszClassName = L"KGCA_Window";
     wc.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH);
     if (RegisterClass(&wc) == false)
     {
@@ -41,14 +39,24 @@ BOOL Window::SetWinClass(HINSTANCE hInstance)
     return TRUE;
 }
 
-BOOL Window::SetWindow(const WCHAR* szTitle, 
+BOOL TWindow::SetWindow(const WCHAR* szTitle, 
     int iClientWidth,
     int iClientHeight)
 {
     RECT rt = { 0,0, iClientWidth , iClientHeight };
     AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, FALSE);
     // 2, 윈도우 생성
-    m_hWnd = CreateWindow(L"Window", szTitle, WS_OVERLAPPEDWINDOW, 0, 0, rt.right - rt.left, rt.bottom - rt.top, NULL, NULL, m_hInstance, NULL);
+    m_hWnd = CreateWindow(
+        L"KGCA_Window",
+        szTitle,
+        WS_OVERLAPPEDWINDOW,
+        0, 0,
+        rt.right-rt.left, 
+        rt.bottom-rt.top, 
+        NULL,
+        NULL,
+        m_hInstance,
+        NULL);
     if (m_hWnd == NULL)
     {
         return FALSE;
@@ -62,7 +70,7 @@ BOOL Window::SetWindow(const WCHAR* szTitle,
     return TRUE;
 }
 
-bool Window::WinRun()
+bool TWindow::WinRun()
 {
     MSG msg;
     // 메세지큐에 메세지가 없으면 블록
@@ -78,12 +86,9 @@ bool Window::WinRun()
     return true;
 }
 
-Window::Window()
+TWindow::TWindow()
 {
     g_pWindow = this;
 }
-Window::~Window()
+TWindow::~TWindow()
 {}
-
-
-

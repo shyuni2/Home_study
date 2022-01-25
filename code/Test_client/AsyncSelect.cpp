@@ -34,10 +34,17 @@ LRESULT AsyncSelect::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		{
 		case FD_CONNECT:
 		{
+			char m_name[20];
+			cout << "ÀÌ¸§ÀÔ·Â : ";
+			cin >> m_name;
+			memcpy(m_Chatuser.m_name, m_name, sizeof(m_name));
+			cout << m_Chatuser.m_name << "´ÔÀÌ ÀÔÀåÇÏ¼Ì½À´Ï´Ù" << endl;
+
 			m_Connect = true;
 		}break;
 		case FD_CLOSE:
 		{
+			cout << m_Chatuser.m_name << "´ÔÀÌ ÅðÀåÇÏ¼Ì½À´Ï´Ù" << endl;
 			m_Connect = false;
 		}break;
 		case FD_READ:
