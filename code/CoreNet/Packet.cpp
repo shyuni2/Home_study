@@ -10,6 +10,11 @@ void Packet::GetData(const char* pData, int Size)
 	memcpy(const_cast<char*>(pData), m_pOffset, Size);
 	m_pOffset += Size;
 };
+void Packet::Reset()
+{
+	m_pOffset = m_uPacket.msg;
+}
+
 Packet& Packet::operator << (int data)
 {
 	PutData((char*)&data, sizeof(int));

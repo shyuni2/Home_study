@@ -1,4 +1,5 @@
 #include "main.h"
+
 bool main::Init()
 {
 	DWORD style = WS_CHILD | WS_VISIBLE | ES_MULTILINE;
@@ -9,7 +10,7 @@ bool main::Init()
 
 	SendMessageA(m_hUserChatBox, LB_ADDSTRING, 0, (LPARAM)"채팅시작!");
 
-	m_Net.InitNetWork();
+	m_Net.InitNetwork();
 	m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, "192.168.0.87");
 	return true;
 }
@@ -43,7 +44,7 @@ bool main::Render()
 }
 bool main::Release()
 {
-	m_Net.CloseNetWork();
+	m_Net.CloseNetwork();
 	return true;
 }
 LRESULT main::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -56,11 +57,10 @@ LRESULT main::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		{
 		case 200:
 		{
-			NetUser user;
 			char buffer[MAX_PATH] = { 0, };
 			SendMessageA(m_hEdit, WM_GETTEXT, MAX_PATH, (LPARAM)buffer);
 			Packet tPacket(PACKET_CHAT_MSG);
-			tPacket << 999 << "[" << user.m_name << "]" << (short)50 << buffer;
+			tPacket << 999 << "[ 이름 ]" << (short)50 << buffer;
 			m_Net.SendData(m_Net.m_Sock, tPacket.m_uPacket);
 
 			SendMessageA(m_hEdit, WM_SETTEXT, 0, (LPARAM)"");
