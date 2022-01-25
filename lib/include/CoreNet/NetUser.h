@@ -8,6 +8,7 @@ using namespace std;
 class NetUser
 {
 public:
+	char* m_name;
 	bool m_Connect = false; // 연결됐는지 판단
 	SOCKET m_Sock;
 	SOCKADDR_IN m_Addr;
