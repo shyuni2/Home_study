@@ -12,11 +12,11 @@ typedef struct {
 	char			msg[4096];
 }UPACKET, *P_UPACKET;
 
-struct TChatMsg
+struct ChatMsg
 {	
 	long	index;
 	char	name[20]; 
-	short	damage;
+	short	age;
 	char	message[256];
 };
 #pragma pack(pop)

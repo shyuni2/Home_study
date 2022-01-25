@@ -19,7 +19,7 @@ bool Network::CloseNetwork()
 }
 
 // 메세지 보내는 함수 방법 2가지
-int Network::SendMsg(SOCKET sock, char* msg, WORD type)
+int Network::SendData(SOCKET sock, char* msg, WORD type)
 {
 	// 1번 패킷 생성
 	UPACKET packet;
@@ -43,7 +43,7 @@ int Network::SendMsg(SOCKET sock, char* msg, WORD type)
 	} while (SendSize < packet.ph.len);
 	return SendSize;
 }
-int Network::SendMsg(SOCKET sock, UPACKET& packet)
+int Network::SendData(SOCKET sock, UPACKET& packet)
 {
 	char* pMsg = (char*)&packet;
 	int SendSize = 0;
@@ -63,7 +63,7 @@ int Network::SendMsg(SOCKET sock, UPACKET& packet)
 }
 
 // 메세지 받는 함수
-int Network::RecvUser(NetUser& user)
+int Network::RecvData(NetUser& user)
 {
 	char szRecvBuffer[1024] = { 0, };
 	int iRecvByte = recv(user.m_Sock, szRecvBuffer, 256, 0);

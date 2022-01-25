@@ -118,12 +118,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../lib/include/Core3D</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../lib/include/Core3D;../../lib/include/CoreNet</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib/include/Core3D</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib/include/Core3D;../../lib/include/CoreNet</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,21 +143,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AsyncSelect.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="NetUser.cpp" />
-    <ClCompile Include="NetWork.cpp" />
-    <ClCompile Include="Packet.cpp" />
-    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AsyncSelect.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="NetUser.h" />
-    <ClInclude Include="NetWork.h" />
-    <ClInclude Include="Packet.h" />
-    <ClInclude Include="Protocol.h" />
-    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

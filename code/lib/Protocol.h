@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h>
+#define PACKET_HEADER_SIZE 4
 
 #pragma pack(push, 1)
 typedef struct {
@@ -10,16 +11,15 @@ typedef struct {
 typedef struct {
 	PACKET_HEADER	ph;
 	char			msg[4096];
-}UPACKET, *P_UPACKET;
+}UPACKET, * P_UPACKET;
 
 struct ChatMsg
-{	
+{
 	long	index;
-	char	name[20]; 
-	short	age;
+	char	name[20];
+	short	damage;
 	char	message[256];
 };
 #pragma pack(pop)
 
-#define PACKET_HEADER_SIZE	 4
 #define PACKET_CHAT_MSG      1000

@@ -15,18 +15,18 @@ bool main::Init()
 }
 bool main::Frame() 
 {
-	int ChatCnt = m_Net.m_PlayerUser.m_PacketPool.size();
+	int ChatCnt = m_Net.m_Chatuser.m_PacketPool.size();
 	if (ChatCnt > 0 && m_MyChatBox != ChatCnt)
 	{
 		m_MyChatBox = ChatCnt;
 		SendMessage(m_hUserChatBox, LB_RESETCONTENT, 0, 0);
 
 		list<Packet>::iterator iter;
-		if (m_Net.m_PlayerUser.m_PacketPool.size() > 20)
+		if (m_Net.m_Chatuser.m_PacketPool.size() > 20)
 		{
-			m_Net.m_PlayerUser.m_PacketPool.pop_front();
+			m_Net.m_Chatuser.m_PacketPool.pop_front();
 		}
-		for (iter = m_Net.m_PlayerUser.m_PacketPool.begin(); iter != m_Net.m_PlayerUser.m_PacketPool.end(); iter++)
+		for (iter = m_Net.m_Chatuser.m_PacketPool.begin(); iter != m_Net.m_Chatuser.m_PacketPool.end(); iter++)
 		{
 			ChatMsg recvdata;
 			ZeroMemory(&recvdata, sizeof(recvdata));

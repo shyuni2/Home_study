@@ -14,8 +14,8 @@ public:
 	bool CloseNetwork();
 public:
 	// 클라니까 유저추가 함수는 필요x
-	int SendMsg(SOCKET sock, char* msg, WORD type);
-	int SendMsg(SOCKET sock, UPACKET& packet);
-	int RecvUser(NetUser& user);
+	int SendData(SOCKET sock, char* msg, WORD type);
+	int SendData(SOCKET sock, UPACKET& packet);
+	int RecvData(NetUser& user);
 };
 
