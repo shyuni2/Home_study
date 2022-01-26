@@ -128,7 +128,7 @@
     </Link>
     <PostBuildEvent>
       <Command>copy "*.h" "../../lib/include/CoreNet"
-copy "..\\..\\output\\Debug\\CoreNet.lib" "..\\..\\Lib\\"
+copy "..\\..\\output\\debug\\CoreNet.lib" "..\\..\\Lib\\"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

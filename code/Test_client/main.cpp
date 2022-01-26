@@ -8,7 +8,7 @@ bool main::Init()
 	m_hButton = CreateWindow(L"button", L"전송", style, 310, g_rtClient.bottom - 50, 50, 50, m_hWnd, (HMENU)200, m_hInstance, NULL);
 	m_hUserChatBox = CreateWindow(L"listbox", NULL, style, 0, 0, 300, g_rtClient.bottom - 70, m_hWnd, (HMENU)300, m_hInstance, NULL);
 
-	SendMessageA(m_hUserChatBox, LB_ADDSTRING, 0, (LPARAM)"채팅시작!");
+	SendMessageA(m_hUserChatBox, LB_ADDSTRING, 0, (LPARAM)"채팅방에 입장하셨습니다");
 
 	m_Net.InitNetwork();
 	m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, "192.168.0.87");

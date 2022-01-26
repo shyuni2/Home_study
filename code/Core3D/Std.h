@@ -1,5 +1,5 @@
 #pragma once
-#include <Winsock2.h> // 윈도우보다 윈속헤더가 위에 있어야함
+#include <Winsock2.h> // 윈속헤더가 윈도우보다 위에 있어야함
 #include <Windows.h>
 #include <vector>
 #include <list>
@@ -17,4 +17,8 @@ extern HWND g_hWnd;
 
 #define GAME_START int WINAPI wWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)  {main main;
 #define SIMPLE_WIN() if (main.SetWinClass(hInstance) == FALSE) return 1; if (main.SetWindow() == FALSE) return 1; main.GameRun(); return 1;}
+
+#define GAME_WIN(s,x,y) if (main.SetWinClass(hInstance) == FALSE) return 1;   if (main.SetWindow(L#s, x, y) == FALSE) return 1;   main.GameRun();    return 1;}
+#define GAME_RUN(s,x,y) GAME_START; GAME_WIN(s,x,y);
+
 #define RUN() GAME_START; SIMPLE_WIN();

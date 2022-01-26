@@ -1,3 +1,3 @@
 #include "main.h"
 
-RUN();
+GAME_RUN(libreay, 1024, 500);
