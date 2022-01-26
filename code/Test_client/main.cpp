@@ -57,10 +57,11 @@ LRESULT main::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		{
 		case 200:
 		{
+			NetUser user;
 			char buffer[MAX_PATH] = { 0, };
 			SendMessageA(m_hEdit, WM_GETTEXT, MAX_PATH, (LPARAM)buffer);
 			Packet tPacket(PACKET_CHAT_MSG);
-			tPacket << 999 << "[ ÀÌ¸§ ]" << (short)50 << buffer;
+			tPacket << 999 << "[ " << user.m_name << " ]" << (short)50 << buffer;
 			m_Net.SendData(m_Net.m_Sock, tPacket.m_uPacket);
 
 			SendMessageA(m_hEdit, WM_SETTEXT, 0, (LPARAM)"");

@@ -1,5 +1,6 @@
 #pragma once
 #include "Window.h"
+
 class Device : public Window
 {
 public:

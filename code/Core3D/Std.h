@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include <d3d11.h>
+#include "Collision.h"
 
 #pragma comment (lib, "Core3D.lib")
 #pragma comment	(lib, "d3d11.lib")

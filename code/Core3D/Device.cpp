@@ -1,4 +1,5 @@
 #include "Device.h"
+
 HRESULT Device::InitDeivice()
 {
 	HRESULT hr = S_OK; 
