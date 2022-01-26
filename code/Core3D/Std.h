@@ -1,6 +1,6 @@
 #pragma once
-#include <winsock2.h>
-#include <windows.h>
+#include <Winsock2.h> // 윈도우보다 윈속헤더가 위에 있어야함
+#include <Windows.h>
 #include <vector>
 #include <list>
 #include <d3d11.h>
@@ -9,7 +9,6 @@
 #pragma comment (lib, "Core3D.lib")
 #pragma comment	(lib, "d3d11.lib")
 #pragma comment	(lib, "ws2_32.lib")
-
 
 using namespace std;
 
