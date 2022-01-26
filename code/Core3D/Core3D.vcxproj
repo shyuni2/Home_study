@@ -160,7 +160,7 @@ copy "..\\..\\output\\debug\\Core3D.lib" "..\\..\\Lib\\"
   <ItemGroup>
     <ClInclude Include="Core.h" />
     <ClInclude Include="Device.h" />
-    <ClInclude Include="Std.h" />
+    <ClInclude Include="3DStd.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />

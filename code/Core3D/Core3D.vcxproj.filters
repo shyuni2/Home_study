@@ -41,7 +41,7 @@
     <ClInclude Include="Device.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Std.h">
+    <ClInclude Include="3DStd.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
