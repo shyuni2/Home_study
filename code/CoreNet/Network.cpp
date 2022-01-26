@@ -65,17 +65,17 @@ int Network::SendData(SOCKET sock, UPACKET& packet)
 // 메세지 받는 함수
 int Network::RecvData(NetUser& user)
 {
-	char szRecvBuffer[1024] = { 0, };
-	int iRecvByte = recv(user.m_Sock, szRecvBuffer, 256, 0);
-	if (iRecvByte == 0)
+	char RecvBuffer[1024] = { 0, };
+	int RecvByte = recv(user.m_Sock, RecvBuffer, 256, 0);
+	if (RecvByte == 0)
 	{
 		closesocket(user.m_Sock);
 		return 0;
 	}
-	if (iRecvByte == SOCKET_ERROR)
+	if (RecvByte == SOCKET_ERROR)
 	{
 		return -1;
 	}
-	user.DispatchRead(szRecvBuffer, iRecvByte);
+	user.DispatchRead(RecvBuffer, RecvByte);
 	return 1;
 }

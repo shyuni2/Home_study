@@ -1,5 +1,5 @@
 #pragma once
-#include <windows.h>
+#include "NetStd.h"
 
 #pragma pack(push, 1)
 typedef struct {

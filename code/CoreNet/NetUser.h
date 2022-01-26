@@ -21,6 +21,6 @@ public:
 	int m_ReadPos; // 
 	list<Packet> m_PacketPool; // 패킷 넣기 (연결리스트 구조)
 public:
-	int DispatchRead(char* szRecvBuffer, int iRecvByte);
+	int DispatchRead(char* RecvBuffer, int RecvByte);
 	void set(SOCKET sock, SOCKADDR_IN addr);
 };

@@ -1,9 +1,9 @@
 #include "NetUser.h"
 
-int NetUser::DispatchRead(char* szRecvBuffer, int iRecvByte)
+int NetUser::DispatchRead(char* RecvBuffer, int RecvByte)
 {
 	// 데이터가 짤려서 들어올수있기 때문에 어디가 시작인지 모르니까 시작위치를 바꿔서 더 받아줌
-	if (m_WritePos + iRecvByte >= 2048)
+	if (m_WritePos + RecvByte >= 2048)
 	{
 		if (m_ReadPos > 0)
 		{
@@ -13,9 +13,9 @@ int NetUser::DispatchRead(char* szRecvBuffer, int iRecvByte)
 		m_WritePos = m_ReadPos; // 잘린 짜투리가 부족할때 더 받음
 	}
 	// 얼만큼 데이터가 들어왔는지 확인할수있기 때문에 받은 양 만큼 넣어주고
-	memcpy(&m_szRecvBuffer[m_WritePos], szRecvBuffer, iRecvByte);
-	m_WritePos += iRecvByte; // 버퍼의 이전에 저장된 위치
-	m_ReadPos += iRecvByte; // 패킷 시작 위치로부터 받은 바이트
+	memcpy(&m_szRecvBuffer[m_WritePos], RecvBuffer, RecvByte);
+	m_WritePos += RecvByte; // 버퍼의 이전에 저장된 위치
+	m_ReadPos += RecvByte; // 패킷 시작 위치로부터 받은 바이트
 
 	if (m_ReadPos >= PACKET_HEADER_SIZE) 
 	{
