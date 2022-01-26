@@ -1,5 +1,5 @@
 #pragma once
-#include <Winsock2.h> // 윈속헤더가 윈도우보다 위에 있어야함
+#include <Winsock2.h> // 윈속헤더가 윈도우헤더보다 위에 있어야함
 #include <Windows.h>
 #include <vector>
 #include <list>
