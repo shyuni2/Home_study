@@ -127,7 +127,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy "*.h" "../../lib/include/CoreNet"
+      <Command>copy "*.h" "../../include/CoreNet"
 copy "..\\..\\output\\debug\\CoreNet.lib" "..\\..\\Lib\\"
 </Command>
     </PostBuildEvent>

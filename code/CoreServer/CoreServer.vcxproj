@@ -127,7 +127,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy "*.h" "../../lib/include/CoreServer"
+      <Command>copy "*.h" "../../include/CoreServer"
 copy "..\\..\\output\\Debug\\CoreServer.lib" "..\\..\\Lib\\"
 </Command>
     </PostBuildEvent>

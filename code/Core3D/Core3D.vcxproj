@@ -127,7 +127,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy "*.h" "../../lib/include/Core3D"
+      <Command>copy "*.h" "../../include/Core3D"
 copy "..\\..\\output\\debug\\Core3D.lib" "..\\..\\Lib\\"
 </Command>
     </PostBuildEvent>
