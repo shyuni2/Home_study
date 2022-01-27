@@ -37,18 +37,15 @@ BOOL Window::SetWinClass(HINSTANCE hInstance)
     {
         return FALSE;
     }
-
     return TRUE;
 }
 
-BOOL Window::SetWindow(const WCHAR* szTitle, 
-    int iClientWidth,
-    int iClientHeight)
+BOOL Window::SetWindow(const WCHAR* Title, int ClientWidth, int ClientHeight)
 {
-    RECT rt = { 0,0, iClientWidth , iClientHeight };
+    RECT rt = { 0,0, ClientWidth , ClientHeight };
     AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, FALSE);
     // 2, 윈도우 생성
-    m_hWnd = CreateWindow(L"Window", szTitle, WS_OVERLAPPEDWINDOW, 0, 0, rt.right - rt.left, rt.bottom - rt.top, NULL, NULL, m_hInstance, NULL);
+    m_hWnd = CreateWindow(L"Window", Title, WS_OVERLAPPEDWINDOW, 100, 100, 432, 600, NULL, NULL, m_hInstance, NULL);
     if (m_hWnd == NULL)
     {
         return FALSE;
@@ -83,7 +80,9 @@ Window::Window()
     g_pWindow = this;
 }
 Window::~Window()
-{}
+{
+
+}
 
 
 

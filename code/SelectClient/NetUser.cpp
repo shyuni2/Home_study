@@ -1,8 +1,8 @@
 #include "NetUser.h"
 
-int NetUser::DispatchRead(char* RecvBuffer, int iRecvByte)
+int NetUser::DispatchRead(char* RecvBuffer, int RecvByte)
 {
-	if (m_WritePos + iRecvByte >= 2048)
+	if (m_WritePos + RecvByte >= 2048)
 	{
 		if (m_ReadPos > 0)
 		{
@@ -11,9 +11,9 @@ int NetUser::DispatchRead(char* RecvBuffer, int iRecvByte)
 		m_PacketPos = 0;
 		m_WritePos = m_ReadPos;
 	}
-	memcpy(&m_RecvBuffer[m_WritePos], RecvBuffer, iRecvByte);
-	m_WritePos += iRecvByte;
-	m_ReadPos += iRecvByte; 
+	memcpy(&m_RecvBuffer[m_WritePos], RecvBuffer, RecvByte);
+	m_WritePos += RecvByte;
+	m_ReadPos += RecvByte; 
 
 	if (m_ReadPos >= PACKET_HEADER_SIZE)
 	{

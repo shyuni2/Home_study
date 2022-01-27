@@ -4,7 +4,6 @@
 list<NetUser> m_Userlist;
 CRITICAL_SECTION cs;
 
-
 int SendData(SOCKET sock, char*msg, WORD type)
 {
 	UPACKET packet;
@@ -160,7 +159,7 @@ void main()
 	SOCKADDR_IN clientAddr;
 	int iLen = sizeof(clientAddr);
 
-	cout	<< "서버 가동중......." << endl;
+	cout << "서버 가동중!" << endl;
 
 	u_long on = 1;
 	ioctlsocket(ListenSock, FIONBIO, &on);
@@ -192,10 +191,10 @@ void main()
 			m_Userlist.push_back(user);
 			LeaveCriticalSection(&cs);
 
-			cout << "ip =" << inet_ntoa(clientAddr.sin_addr) << "port =" << ntohs(clientAddr.sin_port) << " => 접속 " << endl;
+			cout << "ip : " << inet_ntoa(clientAddr.sin_addr) << ", port : " << ntohs(clientAddr.sin_port) << " => 접속 " << endl;
 			u_long on = 1;
 			ioctlsocket(clientSock, FIONBIO, &on);
-			cout << "현재" << m_Userlist.size() << " 명 접속중!" << endl;
+			cout << "현재 " << m_Userlist.size() << "명 접속중!" << endl;
 		}
 		Sleep(1);
 	}

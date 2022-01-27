@@ -19,7 +19,7 @@ public: // ¹öÆÛ
 public:
 	list<Packet> m_PacketPool;
 public:
-	int DispatchRead(char* RecvBuffer, int iRecvByte);
+	int DispatchRead(char* RecvBuffer, int RecvByte);
 	void set(SOCKET sock, SOCKADDR_IN addr);
 };
 

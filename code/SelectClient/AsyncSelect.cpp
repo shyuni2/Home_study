@@ -8,15 +8,15 @@ bool AsyncSelect::Connect(HWND hWnd, int protocol, int iport, const char* ip)
 	sa.sin_family = AF_INET;
 	sa.sin_port = htons(iport);
 	sa.sin_addr.s_addr = inet_addr(ip);
-	m_PlayerUser.m_Sock = m_Sock;
+	m_ChatUser.m_Sock = m_Sock;
 
 	if (WSAAsyncSelect(m_Sock, hWnd, NETWORK_MSG,
 		FD_CONNECT | FD_READ | FD_WRITE | FD_CLOSE) == SOCKET_ERROR)
 	{
 		return false;
 	}
-	int iRet = WSAConnect(m_Sock, (sockaddr*)&sa, sizeof(sa), NULL, NULL, NULL, NULL);
-	if (iRet == SOCKET_ERROR)
+	int ret = WSAConnect(m_Sock, (sockaddr*)&sa, sizeof(sa), NULL, NULL, NULL, NULL);
+	if (ret == SOCKET_ERROR)
 	{
 		return false;
 	}
@@ -41,7 +41,7 @@ LRESULT  AsyncSelect::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		}break;
 		case FD_READ:
 		{
-			RecvData(m_PlayerUser);
+			RecvData(m_ChatUser);
 		}break;
 		case FD_WRITE:
 		{

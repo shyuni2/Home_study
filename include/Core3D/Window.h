@@ -10,7 +10,7 @@ public:
 	RECT m_rtWindow;
 public:
 	BOOL SetWinClass(HINSTANCE hInstance);
-	BOOL SetWindow(const WCHAR* szTitle = L"Sample", int iWidth = 800, int iHeight = 600);
+	BOOL SetWindow(const WCHAR* Title = L"Sample", int iWidth = 800, int iHeight = 600);
 	bool  WinRun();
 	virtual LRESULT  MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 public:

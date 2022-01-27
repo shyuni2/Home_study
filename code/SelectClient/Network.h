@@ -5,7 +5,7 @@ class Network
 {
 public:
 	SOCKET m_Sock;	
-	NetUser m_PlayerUser;
+	NetUser m_ChatUser;
 public:
 	list<NetUser> userlist;
 public:

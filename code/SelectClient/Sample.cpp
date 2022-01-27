@@ -1,5 +1,6 @@
 #include "Sample.h"
 
+// 함수
 LRESULT Sample::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -23,34 +24,33 @@ LRESULT Sample::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	}
 	return m_Net.MsgProc(hWnd, msg, wParam, lParam);
 }
-
 bool Sample::Init()
 {
 	DWORD style = WS_CHILD | WS_VISIBLE | ES_MULTILINE ;
-	m_hEdit = CreateWindow(L"edit", NULL, style, 0, g_rtClient.bottom - 50, 300, 50, m_hWnd, (HMENU)100, m_hInstance, NULL);
+	m_hEdit = CreateWindow(L"edit", NULL, style, 10, g_rtClient.bottom - 60, 335, 50, m_hWnd, (HMENU)100, m_hInstance, NULL);
 	style = WS_CHILD | WS_VISIBLE;
-	m_hButton = CreateWindow(L"button", L"전송", style, 310, g_rtClient.bottom - 50, 50, 50, m_hWnd, (HMENU)200, m_hInstance, NULL);
-	m_hListBox = CreateWindow(L"listbox", NULL, style, 0, 0, 300, g_rtClient.bottom - 70, m_hWnd, (HMENU)300, m_hInstance, NULL);
+	m_hButton = CreateWindow(L"button", L"전송", style, 355, g_rtClient.bottom - 60, 50, 50, m_hWnd, (HMENU)200, m_hInstance, NULL);
+	m_hListBox = CreateWindow(L"listbox", NULL, style, 10, 10, 395, g_rtClient.bottom - 70, m_hWnd, (HMENU)300, m_hInstance, NULL);
 	SendMessageA(m_hListBox, LB_ADDSTRING, 0, (LPARAM)"채팅방에 입장하셨습니다");
-	
+
 	m_Net.InitNetwork();
 	m_Net.Connect(g_hWnd, SOCK_STREAM, 1, "192.168.0.87");
 	return true;
 }
 bool	Sample::Frame()
 {
-	int iChatCnt = m_Net.m_PlayerUser.m_PacketPool.size();
-	if (iChatCnt > 0 && m_iChatCnt != iChatCnt)
+	int ChatCnt = m_Net.m_ChatUser.m_PacketPool.size();
+	if (ChatCnt > 0 && m_ChatCnt != ChatCnt)
 	{
-		m_iChatCnt = iChatCnt;
+		m_ChatCnt = ChatCnt;
 		SendMessage(m_hListBox, LB_RESETCONTENT, 0, 0);
 
 		list<Packet>::iterator iter;
-		if (m_Net.m_PlayerUser.m_PacketPool.size() > 20)
+		if (m_Net.m_ChatUser.m_PacketPool.size() > 20)
 		{
-			m_Net.m_PlayerUser.m_PacketPool.pop_front();
+			m_Net.m_ChatUser.m_PacketPool.pop_front();
 		}
-		for (iter = m_Net.m_PlayerUser.m_PacketPool.begin(); iter != m_Net.m_PlayerUser.m_PacketPool.end(); iter++)
+		for (iter = m_Net.m_ChatUser.m_PacketPool.begin(); iter != m_Net.m_ChatUser.m_PacketPool.end(); iter++)
 		{
 			ChatMsg recvdata;
 			ZeroMemory(&recvdata, sizeof(recvdata));
@@ -70,6 +70,8 @@ bool Sample::Release()
 	m_Net.CloseNetwork();
 	return true;
 }
+
+// 생성자 소멸자
 Sample::Sample()
 {
 
@@ -79,4 +81,5 @@ Sample::~Sample()
 
 }
 
+// 실행
 RUN();

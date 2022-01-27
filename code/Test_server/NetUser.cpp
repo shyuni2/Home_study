@@ -1,4 +1,5 @@
 #include "NetUser.h"
+
 int NetUser::DispatchRead(char* RecvBuffer, int RecvByte)
 {
 	if (m_WritePos + RecvByte >= 2048)

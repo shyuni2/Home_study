@@ -4,11 +4,12 @@
 
 class Sample : public Core
 {
+public:
 	AsyncSelect	m_Net;
 	HWND m_hEdit;
 	HWND m_hButton;
 	HWND m_hListBox;
-	int m_iChatCnt;
+	int m_ChatCnt;
 public:
 	virtual bool Init()  override;
 	virtual bool Frame()  override;

@@ -1,5 +1,6 @@
 #include "Network.h"
 
+// 네트워크 연결 함수
 bool Network::InitNetwork()
 {
 	WSADATA wsa;
@@ -24,10 +25,10 @@ bool Network::InitServer(int protocol, int iport, const char* ip)
 	{
 		sa.sin_addr.s_addr = inet_addr(ip);
 	}
-	int iRet = bind(m_Sock, (sockaddr*)&sa, sizeof(sa));
-	if (iRet == SOCKET_ERROR)  return false;
-	iRet = listen(m_Sock, SOMAXCONN);
-	if (iRet == SOCKET_ERROR)  return false;
+	int ret = bind(m_Sock, (sockaddr*)&sa, sizeof(sa));
+	if (ret == SOCKET_ERROR)  return false;
+	ret = listen(m_Sock, SOMAXCONN);
+	if (ret == SOCKET_ERROR)  return false;
 	return true;
 }
 bool Network::CloseNetwork()
@@ -36,6 +37,8 @@ bool Network::CloseNetwork()
 	WSACleanup();
 	return true;
 }
+
+// 데이터 주고받는 함수
 int Network::SendData(SOCKET sock, char* msg, WORD type)
 {
 	// 1번 패킷 생성
@@ -79,6 +82,23 @@ int Network::SendData(SOCKET sock, UPACKET& packet)
 	} while (iSendSize < packet.ph.len);
 	return iSendSize;
 }
+int Network::RecvData(NetUser& user)
+{
+	char RecvBuffer[1024] = { 0, };
+	int RecvByte = recv(user.m_Sock, RecvBuffer, 1024, 0);
+	if (RecvByte == 0)
+	{
+		return 0;
+	}
+	if (RecvByte == SOCKET_ERROR)
+	{
+		return -1;
+	}
+	user.DispatchRead(RecvBuffer, RecvByte);
+	return 1;
+}
+
+// 유저추가
 int Network::AddUser(SOCKET sock)
 {
 	SOCKADDR_IN clientAddr;
@@ -93,23 +113,8 @@ int Network::AddUser(SOCKET sock)
 		NetUser user;
 		user.set(clientSock, clientAddr);
 		userlist.push_back(user);
-		cout << "ip =" << inet_ntoa(clientAddr.sin_addr) << "port =" << ntohs(clientAddr.sin_port) << "  " << endl;
-		cout << userlist.size() << " 명 접속중.." << endl;
+		cout << "ip =" << inet_ntoa(clientAddr.sin_addr) << "port =" << ntohs(clientAddr.sin_port) << " => 접속 " << endl;
+		cout << "현재" << userlist.size() << " 명 접속중" << endl;
 	}
-	return 1;
-}
-int Network::RecvData(NetUser& user)
-{
-	char RecvBuffer[1024] = { 0, };
-	int iRecvByte = recv(user.m_Sock, RecvBuffer, 1024, 0);
-	if (iRecvByte == 0)
-	{
-		return 0;
-	}
-	if (iRecvByte == SOCKET_ERROR)
-	{
-		return -1;
-	}
-	user.DispatchRead(RecvBuffer, iRecvByte);
 	return 1;
 }
