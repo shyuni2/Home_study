@@ -14,9 +14,9 @@ LRESULT Sample::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		{
 			char buffer[MAX_PATH] = { 0, };
 			SendMessageA(m_hEdit, WM_GETTEXT, MAX_PATH, (LPARAM)buffer);
-			Packet tPacket(PACKET_CHAT_MSG);
-			tPacket << 999 << "홍길동" << (short)50 << buffer;
-			m_Net.SendData(m_Net.m_Sock, tPacket.m_uPacket);
+			Packet sPacket(PACKET_CHAT_MSG);
+			sPacket << 1 << "승현" << (short)26 << buffer;
+			m_Net.SendData(m_Net.m_Sock, sPacket.m_uPacket);
 
 			SendMessageA(m_hEdit, WM_SETTEXT, 0, (LPARAM)" ");
 		}break;
@@ -31,21 +31,26 @@ bool Sample::Init()
 	m_hEdit = CreateWindow(L"edit", NULL, style, 10, g_rtClient.bottom - 60, 335, 50, m_hWnd, (HMENU)100, m_hInstance, NULL);
 	style = WS_CHILD | WS_VISIBLE;
 	m_hButton = CreateWindow(L"button", L"전송", style, 355, g_rtClient.bottom - 60, 50, 50, m_hWnd, (HMENU)200, m_hInstance, NULL);
-	m_hListBox = CreateWindow(L"listbox", NULL, style, 10, 10, 395, g_rtClient.bottom - 70, m_hWnd, (HMENU)300, m_hInstance, NULL);
-	SendMessageA(m_hListBox, LB_ADDSTRING, 0, (LPARAM)"채팅방에 입장하셨습니다");
+	m_hChatBox = CreateWindow(L"listbox", NULL, style, 10, 10, 395, g_rtClient.bottom - 70, m_hWnd, (HMENU)300, m_hInstance, NULL);
 
+	m_hUserCount = CreateWindow(L"listbox", NULL, style, 418, 10, 140, 200, m_hWnd, (HMENU)400, m_hInstance, NULL);
 
+	SendMessageA(m_hChatBox, LB_ADDSTRING, 0, (LPARAM)"채팅방에 입장하셨습니다");
+	SendMessageA(m_hUserCount, LB_ADDSTRING, 0, (LPARAM)"현재 접속유저");
+
+	
 	m_Net.InitNetwork();
 	m_Net.Connect(g_hWnd, SOCK_STREAM, 1, "192.168.0.87");
 	return true;
 }
 bool	Sample::Frame()
 {
-	int ChatCnt = m_Net.m_ChatUser.m_PacketPool.size();
-	if (ChatCnt > 0 && m_ChatCnt != ChatCnt)
+	// 채팅창
+	int ChatBox = m_Net.m_ChatUser.m_PacketPool.size();
+	if (ChatBox > 0 && m_ChatBox != ChatBox)
 	{
-		m_ChatCnt = ChatCnt;
-		SendMessage(m_hListBox, LB_RESETCONTENT, 0, 0);
+		m_ChatBox = ChatBox;
+		SendMessage(m_hChatBox, LB_RESETCONTENT, 0, 0);
 
 		list<Packet>::iterator iter;
 		if (m_Net.m_ChatUser.m_PacketPool.size() > 20)
@@ -57,11 +62,18 @@ bool	Sample::Frame()
 			ChatMsg recvdata;
 			ZeroMemory(&recvdata, sizeof(recvdata));
 			(*iter) >> recvdata.index >> recvdata.name >> recvdata.age >> recvdata.message;
-			SendMessageA(m_hListBox, LB_ADDSTRING, 0, (LPARAM)recvdata.message);
+			SendMessageA(m_hChatBox, LB_ADDSTRING, 0, (LPARAM)recvdata.name); // 이름출력
+			SendMessageA(m_hChatBox, LB_ADDSTRING, 0, (LPARAM)recvdata.message); // 메세지 출력
 			
 			(*iter).Reset();
 		}
 	}
+
+	// 접속유저 출력
+	ChatMsg recvdata;
+	ZeroMemory(&recvdata, sizeof(recvdata));
+	SendMessageA(m_hUserCount, LB_ADDSTRING, 0, (LPARAM)recvdata.name);
+
 	return true;
 }
 bool Sample::Render()

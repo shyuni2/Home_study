@@ -21,9 +21,9 @@ int NetUser::DispatchRead(char* RecvBuffer, int RecvByte)
 		if (pPacket->ph.len <= m_ReadPos)
 		{
 			do {
-				Packet tPacket(pPacket->ph.type);
-				memcpy(&tPacket.m_uPacket, &m_RecvBuffer[m_PacketPos], pPacket->ph.len);
-				m_PacketPool.push_back(tPacket);
+				Packet sPacket(pPacket->ph.type);
+				memcpy(&sPacket.m_uPacket, &m_RecvBuffer[m_PacketPos], pPacket->ph.len);
+				m_PacketPool.push_back(sPacket);
 
 				// 다음패킷 처리
 				m_PacketPos += pPacket->ph.len;

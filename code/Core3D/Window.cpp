@@ -46,7 +46,7 @@ BOOL Window::SetWindow(const WCHAR* Title, int ClientWidth, int ClientHeight)
     RECT rt = { 0,0, ClientWidth , ClientHeight };
     AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, FALSE);
     // 2, 윈도우 생성
-    m_hWnd = CreateWindow(L"Window", Title, WS_OVERLAPPEDWINDOW, 100, 100, 432, 600, NULL, NULL, m_hInstance, NULL);
+    m_hWnd = CreateWindow(L"Window", Title, WS_OVERLAPPEDWINDOW, 100, 100, 585, 600, NULL, NULL, m_hInstance, NULL);
     if (m_hWnd == NULL)
     {
         return FALSE;
