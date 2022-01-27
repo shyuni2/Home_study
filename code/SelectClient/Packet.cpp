@@ -43,7 +43,7 @@ Packet& Packet::operator << (char* data)
 	PutData(data, strlen(data)+1);
 	return *this;
 }
-Packet& Packet::operator << (std::string data)
+Packet& Packet::operator << (string data)
 {
 	PutData(data.c_str(), data.size()+1);
 	return *this;
@@ -76,7 +76,7 @@ Packet& Packet::operator >> (char* data)
 	GetData(data, iSize);
 	return *this;
 }
-Packet& Packet::operator >> (std::string& data)
+Packet& Packet::operator >> (string& data)
 {
 	int iSize = strlen(m_pOffset + 1);
 	GetData(data.c_str(), iSize);

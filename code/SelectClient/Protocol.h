@@ -1,5 +1,5 @@
 #pragma once
-#include <windows.h>
+#include "3DStd.h"
 
 #pragma pack(push, 1)
 
@@ -17,7 +17,7 @@ struct ChatMsg
 {	
 	long index;
 	char name[20]; 
-	short damage;
+	short age;
 	char message[256];
 };
 #pragma pack(pop)

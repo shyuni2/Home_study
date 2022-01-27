@@ -33,19 +33,19 @@ LRESULT  AsyncSelect::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		{
 		case FD_CONNECT :
 		{
-			m_bConnect = true;
+			m_Connect = true;
 		}break;
 		case FD_CLOSE:
 		{
-			m_bConnect = false;
+			m_Connect = false;
 		}break;
 		case FD_READ:
 		{
-			RecvUser(m_PlayerUser);
+			RecvData(m_PlayerUser);
 		}break;
 		case FD_WRITE:
 		{
-			m_bConnect = false;
+			m_Connect = false;
 		}break;
 		}
 	}break;

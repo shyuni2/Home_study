@@ -1,39 +1,39 @@
 #include "NetUser.h"
 
-int NetUser::DispatchRead(char* szRecvBuffer, int iRecvByte)
+int NetUser::DispatchRead(char* RecvBuffer, int iRecvByte)
 {
-	if (m_iWritePos + iRecvByte >= 2048)
+	if (m_WritePos + iRecvByte >= 2048)
 	{
-		if (m_iReadPos > 0)
+		if (m_ReadPos > 0)
 		{
-			memmove(&m_szRecvBuffer[0], &m_szRecvBuffer[m_iPacketPos], m_iReadPos);
+			memmove(&m_RecvBuffer[0], &m_RecvBuffer[m_PacketPos], m_ReadPos);
 		}
-		m_iPacketPos = 0;
-		m_iWritePos = m_iReadPos;
+		m_PacketPos = 0;
+		m_WritePos = m_ReadPos;
 	}
-	memcpy(&m_szRecvBuffer[m_iWritePos], szRecvBuffer, iRecvByte);
-	m_iWritePos += iRecvByte;
-	m_iReadPos += iRecvByte; 
+	memcpy(&m_RecvBuffer[m_WritePos], RecvBuffer, iRecvByte);
+	m_WritePos += iRecvByte;
+	m_ReadPos += iRecvByte; 
 
-	if (m_iReadPos >= PACKET_HEADER_SIZE)
+	if (m_ReadPos >= PACKET_HEADER_SIZE)
 	{
-		UPACKET* pPacket = (UPACKET*)&m_szRecvBuffer[m_iPacketPos];
-		if (pPacket->ph.len <= m_iReadPos)
+		UPACKET* pPacket = (UPACKET*)&m_RecvBuffer[m_PacketPos];
+		if (pPacket->ph.len <= m_ReadPos)
 		{
 			do {
 				Packet tPacket(pPacket->ph.type);
-				memcpy(&tPacket.m_uPacket, &m_szRecvBuffer[m_iPacketPos], pPacket->ph.len);
-				m_packetPool.push_back(tPacket);
+				memcpy(&tPacket.m_uPacket, &m_RecvBuffer[m_PacketPos], pPacket->ph.len);
+				m_PacketPool.push_back(tPacket);
 
 				// 다음패킷 처리
-				m_iPacketPos += pPacket->ph.len;
-				m_iReadPos -= pPacket->ph.len;
-				if (m_iReadPos < PACKET_HEADER_SIZE)
+				m_PacketPos += pPacket->ph.len;
+				m_ReadPos -= pPacket->ph.len;
+				if (m_ReadPos < PACKET_HEADER_SIZE)
 				{
 					break;
 				}
-				pPacket = (UPACKET*)&m_szRecvBuffer[m_iPacketPos];
-			} while (pPacket->ph.len <= m_iReadPos);
+				pPacket = (UPACKET*)&m_RecvBuffer[m_PacketPos];
+			} while (pPacket->ph.len <= m_ReadPos);
 		}
 	}
 	return 1;
@@ -41,13 +41,13 @@ int NetUser::DispatchRead(char* szRecvBuffer, int iRecvByte)
 
 void NetUser::set(SOCKET sock, SOCKADDR_IN addr)
 {
-	m_bConnect = true;
-	ZeroMemory(m_szRecvBuffer, sizeof(char) * 2048);
-	m_iPacketPos = 0;
-	m_iWritePos = 0;
-	m_iReadPos = 0;
+	m_Connect = true;
+	ZeroMemory(m_RecvBuffer, sizeof(char) * 2048);
+	m_PacketPos = 0;
+	m_WritePos = 0;
+	m_ReadPos = 0;
 	m_Sock = sock;
 	m_Addr = addr;
 	m_csName = inet_ntoa(addr.sin_addr);
-	m_iPort = ntohs(addr.sin_port);
+	m_Port = ntohs(addr.sin_port);
 }

@@ -8,6 +8,7 @@ public:
 	char* m_pOffset;
 	char* c_str() { return m_pOffset; }
 	UPACKET m_uPacket;
+public:
 	void PutData(const char* pData, int iSize);
 	void GetData(const char* pData, int iSize);
 	void Reset();
@@ -19,7 +20,7 @@ public:
 	Packet& operator << (byte data);
 	Packet& operator << (char* data);
 	Packet& operator << (DWORD data);
-	Packet& operator << (std::string data);
+	Packet& operator << (string data);
 public:
 	Packet& operator >> (int& data);
 	Packet& operator >> (long& data);
@@ -28,7 +29,7 @@ public:
 	Packet& operator >> (byte& data);
 	Packet& operator >> (char* data);
 	Packet& operator >> (DWORD& data);
-	Packet& operator >> (std::string& data);
+	Packet& operator >> (string& data);
 public:
 	Packet();
 	Packet(WORD iType);

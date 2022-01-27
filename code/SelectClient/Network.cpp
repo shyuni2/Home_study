@@ -36,7 +36,7 @@ bool Network::CloseNetwork()
 	WSACleanup();
 	return true;
 }
-int Network::SendMsg(SOCKET sock, char* msg, WORD type)
+int Network::SendData(SOCKET sock, char* msg, WORD type)
 {
 	// 1번 패킷 생성
 	UPACKET packet;
@@ -61,7 +61,7 @@ int Network::SendMsg(SOCKET sock, char* msg, WORD type)
 	} while (iSendSize < packet.ph.len);
 	return iSendSize;
 }
-int Network::SendMsg(SOCKET sock, UPACKET& packet)
+int Network::SendData(SOCKET sock, UPACKET& packet)
 {
 	char* pMsg = (char*)&packet;
 	int iSendSize = 0;
@@ -93,15 +93,15 @@ int Network::AddUser(SOCKET sock)
 		NetUser user;
 		user.set(clientSock, clientAddr);
 		userlist.push_back(user);
-		std::cout << "ip =" << inet_ntoa(clientAddr.sin_addr) << "port =" << ntohs(clientAddr.sin_port) << "  " << std::endl;
-		std::cout << userlist.size() << " 명 접속중.." << std::endl;
+		cout << "ip =" << inet_ntoa(clientAddr.sin_addr) << "port =" << ntohs(clientAddr.sin_port) << "  " << endl;
+		cout << userlist.size() << " 명 접속중.." << endl;
 	}
 	return 1;
 }
-int Network::RecvUser(NetUser& user)
+int Network::RecvData(NetUser& user)
 {
-	char szRecvBuffer[1024] = { 0, };
-	int iRecvByte = recv(user.m_Sock, szRecvBuffer, 1024, 0);
+	char RecvBuffer[1024] = { 0, };
+	int iRecvByte = recv(user.m_Sock, RecvBuffer, 1024, 0);
 	if (iRecvByte == 0)
 	{
 		return 0;
@@ -110,6 +110,6 @@ int Network::RecvUser(NetUser& user)
 	{
 		return -1;
 	}
-	user.DispatchRead(szRecvBuffer, iRecvByte);
+	user.DispatchRead(RecvBuffer, iRecvByte);
 	return 1;
 }

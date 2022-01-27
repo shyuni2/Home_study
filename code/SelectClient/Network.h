@@ -4,17 +4,18 @@
 class Network
 {
 public:
-	SOCKET m_Sock;
-	std::list<NetUser> userlist;
+	SOCKET m_Sock;	
 	NetUser m_PlayerUser;
+public:
+	list<NetUser> userlist;
 public:
 	bool InitNetwork();
 	bool CloseNetwork();	
-	bool InitServer(int protocol, int iport, const char* ip=nullptr);
+	bool InitServer(int protocol, int iport, const char* ip = nullptr);
 public:
-	int SendMsg(SOCKET sock, char* msg, WORD type);
-	int SendMsg(SOCKET sock, UPACKET& packet);
+	int SendData(SOCKET sock, char* msg, WORD type);
+	int SendData(SOCKET sock, UPACKET& packet);
 	int AddUser(SOCKET sock);
-	int RecvUser(NetUser& user);
+	int RecvData(NetUser& user);
 };
 
