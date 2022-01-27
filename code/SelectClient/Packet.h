@@ -9,8 +9,8 @@ public:
 	char* c_str() { return m_pOffset; }
 	UPACKET m_uPacket;
 public:
-	void PutData(const char* pData, int iSize);
-	void GetData(const char* pData, int iSize);
+	void PutData(const char* pData, int Size);
+	void GetData(const char* pData, int Size);
 	void Reset();
 public:
 	Packet& operator << (int data);

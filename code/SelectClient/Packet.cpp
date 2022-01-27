@@ -1,16 +1,16 @@
 #include "Packet.h"
 
 // ÇÔ¼ö
-void Packet::PutData(const char* pData, int iSize)
+void Packet::PutData(const char* pData, int Size)
 {
-	m_uPacket.ph.len += iSize;
-	memcpy(m_pOffset, pData, iSize);
-	m_pOffset += iSize;
+	m_uPacket.ph.len += Size;
+	memcpy(m_pOffset, pData, Size);
+	m_pOffset += Size;
 };
-void Packet::GetData(const char* pData, int iSize)
+void Packet::GetData(const char* pData, int Size)
 {
-	memcpy(const_cast<char*>(pData), m_pOffset, iSize);
-	m_pOffset += iSize;
+	memcpy(const_cast<char*>(pData), m_pOffset, Size);
+	m_pOffset += Size;
 };
 void Packet::Reset()
 {
@@ -72,14 +72,14 @@ Packet& Packet::operator >> (float& data)
 }
 Packet& Packet::operator >> (char* data)
 {
-	int iSize = strlen(m_pOffset) + 1;
-	GetData(data, iSize);
+	int Size = strlen(m_pOffset) + 1;
+	GetData(data, Size);
 	return *this;
 }
 Packet& Packet::operator >> (string& data)
 {
-	int iSize = strlen(m_pOffset + 1);
-	GetData(data.c_str(), iSize);
+	int Size = strlen(m_pOffset + 1);
+	GetData(data.c_str(), Size);
 	return *this;
 }
 

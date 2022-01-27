@@ -49,38 +49,37 @@ int Network::SendData(SOCKET sock, char* msg, WORD type)
 	memcpy(packet.msg, msg, strlen(msg));
 	// 2번 패킷 전송 
 	char* pMsg = (char*)&packet;
-	int iSendSize = 0;
+	int SendSize = 0;
 	do {
-		int iSendByte = send(sock, &pMsg[iSendSize],
-			packet.ph.len - iSendSize, 0);
-		if (iSendByte == SOCKET_ERROR)
+		int SendByte = send(sock, &pMsg[SendSize],
+			packet.ph.len - SendSize, 0);
+		if (SendByte == SOCKET_ERROR)
 		{
 			if (WSAGetLastError() != WSAEWOULDBLOCK)
 			{
 				return -1;
 			}
 		}
-		iSendSize += iSendByte;
-	} while (iSendSize < packet.ph.len);
-	return iSendSize;
+		SendSize += SendByte;
+	} while (SendSize < packet.ph.len);
+	return SendSize;
 }
 int Network::SendData(SOCKET sock, UPACKET& packet)
 {
 	char* pMsg = (char*)&packet;
-	int iSendSize = 0;
+	int SendSize = 0;
 	do {
-		int iSendByte = send(sock, &pMsg[iSendSize],
-			packet.ph.len - iSendSize, 0);
-		if (iSendByte == SOCKET_ERROR)
+		int SendByte = send(sock, &pMsg[SendSize], packet.ph.len - SendSize, 0);
+		if (SendByte == SOCKET_ERROR)
 		{
 			if (WSAGetLastError() != WSAEWOULDBLOCK)
 			{
 				return -1;
 			}
 		}
-		iSendSize += iSendByte;
-	} while (iSendSize < packet.ph.len);
-	return iSendSize;
+		SendSize += SendByte;
+	} while (SendSize < packet.ph.len);
+	return SendSize;
 }
 int Network::RecvData(NetUser& user)
 {
