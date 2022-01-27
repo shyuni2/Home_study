@@ -1,6 +1,6 @@
 #include "Network.h"
 
-bool Network::IniNetwork()
+bool Network::InitNetwork()
 {
 	WSADATA wsa;
 	if(WSAStartup(MAKEWORD(2, 2), &wsa) != 0)

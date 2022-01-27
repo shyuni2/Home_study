@@ -8,7 +8,7 @@ public:
 	list<NetUser> userlist;
 	NetUser m_ChatUser;
 public:
-	bool IniNetwork();
+	bool InitNetwork();
 	bool CloseNetwork();
 	bool InitServer(int protocol, int iport, const char* ip=nullptr);
 public:
