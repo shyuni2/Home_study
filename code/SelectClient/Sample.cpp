@@ -65,12 +65,11 @@ bool	Sample::Frame()
 			(*iter) >> recvdata.index >> recvdata.name >> recvdata.age >> recvdata.message;
 			SendMessageA(m_hChatBox, LB_ADDSTRING, 0, (LPARAM)recvdata.name); // 이름출력
 			SendMessageA(m_hChatBox, LB_ADDSTRING, 0, (LPARAM)recvdata.message); // 메세지 출력
-
 			SendMessageA(m_hUserCount, LB_ADDSTRING, 0, (LPARAM)recvdata.name);// 접속유저 출력
 
 			(*iter).Reset();
 		}
-	}
+	}	
 	return true;
 }
 bool Sample::Render()
