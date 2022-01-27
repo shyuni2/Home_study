@@ -54,8 +54,8 @@ int Broadcast(NetUser& user)
 		{
 			for (NetUser& senduser : m_Userlist)
 			{
-				int iRet = SendData(senduser.m_Sock, (*iter).m_uPacket);
-				if (iRet <= 0)
+				int ret = SendData(senduser.m_Sock, (*iter).m_uPacket);
+				if (ret <= 0)
 				{
 					senduser.m_Connect = false;
 				}
@@ -94,8 +94,8 @@ DWORD WINAPI RecvThread(LPVOID param)
 		list<NetUser>::iterator userIter;
 		for (userIter = m_Userlist.begin(); userIter != m_Userlist.end();)
 		{
-			int iRet = RecvUser(*userIter);
-			if (iRet <= 0)
+			int ret = RecvUser(*userIter);
+			if (ret <= 0)
 			{
 				userIter = m_Userlist.erase(userIter);
 			}
@@ -117,8 +117,8 @@ DWORD WINAPI SendThread(LPVOID param)
 		list<NetUser>::iterator userIter;
 		for (userIter = m_Userlist.begin(); userIter != m_Userlist.end();)
 		{
-			int iRet = Broadcast(*userIter);
-			if (iRet <= 0)
+			int ret = Broadcast(*userIter);
+			if (ret <= 0)
 			{
 				userIter = m_Userlist.erase(userIter);
 			}
@@ -145,13 +145,13 @@ void main()
 	sa.sin_family = AF_INET;
 	sa.sin_port = htons(1);
 	sa.sin_addr.s_addr = htonl(INADDR_ANY);
-	int iRet = bind(ListenSock, (sockaddr*)&sa, sizeof(sa));
-	if (iRet == SOCKET_ERROR)
+	int ret = bind(ListenSock, (sockaddr*)&sa, sizeof(sa));
+	if (ret == SOCKET_ERROR)
 	{
 		return;
 	}
-	iRet = listen(ListenSock, SOMAXCONN);
-	if (iRet == SOCKET_ERROR)
+	ret = listen(ListenSock, SOMAXCONN);
+	if (ret == SOCKET_ERROR)
 	{
 		return;
 	}
@@ -173,8 +173,8 @@ void main()
 
 	while (1)
 	{
-		SOCKET clientSock = accept(ListenSock, (sockaddr*)&clientAddr, &iLen);
-		if (clientSock == SOCKET_ERROR)
+		SOCKET ClientSock = accept(ListenSock, (sockaddr*)&clientAddr, &iLen);
+		if (ClientSock == SOCKET_ERROR)
 		{
 			int error = WSAGetLastError();
 			if (error != WSAEWOULDBLOCK)
@@ -186,14 +186,14 @@ void main()
 		else
 		{
 			NetUser user;
-			user.set(clientSock, clientAddr);
+			user.set(ClientSock, clientAddr);
 			EnterCriticalSection(&cs);
 			m_Userlist.push_back(user);
 			LeaveCriticalSection(&cs);
 
 			cout << "ip : " << inet_ntoa(clientAddr.sin_addr) << ", port : " << ntohs(clientAddr.sin_port) << " => 立加 " << endl;
 			u_long on = 1;
-			ioctlsocket(clientSock, FIONBIO, &on);
+			ioctlsocket(ClientSock, FIONBIO, &on);
 			cout << "泅犁 " << m_Userlist.size() << "疙 立加吝!" << endl;
 		}
 		Sleep(1);
