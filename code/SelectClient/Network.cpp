@@ -112,8 +112,25 @@ int Network::AddUser(SOCKET sock)
 		NetUser user;
 		user.set(clientSock, clientAddr);
 		userlist.push_back(user);
-		cout << "ip =" << inet_ntoa(clientAddr.sin_addr) << "port =" << ntohs(clientAddr.sin_port) << " => 立加 " << endl;
-		cout << "泅犁" << userlist.size() << " 疙 立加吝" << endl;
+		Broadcast(user);
+	}
+	return 1;
+}
+
+int Network::Broadcast(NetUser& user)
+{
+	if (user.m_PacketPool.size() > 0)
+	{
+		list<Packet>::iterator iter;
+		for (iter = user.m_PacketPool.begin(); iter != user.m_PacketPool.end(); )
+		{
+			int ret = SendData(user.m_Sock, (*iter).m_uPacket);
+			if (ret <= 0)
+			{
+				user.m_Connect = false;
+			}
+			iter = user.m_PacketPool.erase(iter);
+		}
 	}
 	return 1;
 }
