@@ -18,7 +18,7 @@ LRESULT Sample::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			tPacket << 999 << "ȫ�浿" << (short)50 << buffer;
 			m_Net.SendData(m_Net.m_Sock, tPacket.m_uPacket);
 
-			SendMessageA(m_hEdit, WM_SETTEXT, 0, (LPARAM)"t");
+			SendMessageA(m_hEdit, WM_SETTEXT, 0, (LPARAM)" ");
 
 
 			
