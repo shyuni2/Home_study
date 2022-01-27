@@ -1,4 +1,6 @@
 #include "Packet.h"
+
+// 함수
 void Packet::PutData(const char* pData, int iSize)
 {
 	m_uPacket.ph.len += iSize;
@@ -10,6 +12,12 @@ void Packet::GetData(const char* pData, int iSize)
 	memcpy(const_cast<char*>(pData), m_pOffset, iSize);
 	m_pOffset += iSize;
 };
+void Packet::Reset()
+{
+	m_pOffset = m_uPacket.msg;
+}
+
+// << 오버로딩
 Packet& Packet::operator << (int data)
 {
 	PutData((char*)&data, sizeof(int));
@@ -41,8 +49,7 @@ Packet& Packet::operator << (std::string data)
 	return *this;
 }
 
-
-
+// >> 오버로딩
 Packet& Packet::operator >> (int& data)
 {
 	GetData((char*)&data, sizeof(int));
@@ -75,10 +82,8 @@ Packet& Packet::operator >> (std::string& data)
 	GetData(data.c_str(), iSize);
 	return *this;
 }
-void Packet::Reset()
-{
-	m_pOffset = m_uPacket.msg;
-}
+
+// 생성자 소멸자
 Packet::Packet()
 {
 	ZeroMemory(&m_uPacket, sizeof(UPACKET));

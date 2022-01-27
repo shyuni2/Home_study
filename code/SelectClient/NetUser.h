@@ -4,7 +4,6 @@
 #include "3DStd.h"
 #include "Packet.h"
 
-
 class NetUser
 {
 public:

@@ -1,9 +1,7 @@
 #include "NetUser.h"
+
 int NetUser::DispatchRead(char* szRecvBuffer, int iRecvByte)
 {
-	//p1(m_iPacketPos)  p2(2.1)       pn   (m_ReadPos)
-	//2035 ~ 2038 ~ 22  ~ 50  ~  2028 ~ 2038 ~ 2048 
-	//0 ~ 5 ~ iRecvByte
 	if (m_iWritePos + iRecvByte >= 2048)
 	{
 		if (m_iReadPos > 0)
@@ -14,21 +12,17 @@ int NetUser::DispatchRead(char* szRecvBuffer, int iRecvByte)
 		m_iWritePos = m_iReadPos;
 	}
 	memcpy(&m_szRecvBuffer[m_iWritePos], szRecvBuffer, iRecvByte);
-	m_iWritePos += iRecvByte;// 버퍼에 이전에 저장된 위치
-	m_iReadPos += iRecvByte; // 패킷시작 위치로부터 받은 바이트
+	m_iWritePos += iRecvByte;
+	m_iReadPos += iRecvByte; 
 
 	if (m_iReadPos >= PACKET_HEADER_SIZE)
 	{
-		// 패킷 해석 가능
 		UPACKET* pPacket = (UPACKET*)&m_szRecvBuffer[m_iPacketPos];
-		// 적어도 1개의 패킷은 도착했다.
 		if (pPacket->ph.len <= m_iReadPos)
 		{
 			do {
 				Packet tPacket(pPacket->ph.type);
-				memcpy(&tPacket.m_uPacket,
-					&m_szRecvBuffer[m_iPacketPos],
-					pPacket->ph.len);
+				memcpy(&tPacket.m_uPacket, &m_szRecvBuffer[m_iPacketPos], pPacket->ph.len);
 				m_packetPool.push_back(tPacket);
 
 				// 다음패킷 처리

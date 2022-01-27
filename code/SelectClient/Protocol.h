@@ -16,9 +16,9 @@ typedef struct {
 struct ChatMsg
 {	
 	long index;
-	char name[20]; // È«±æµ¿
+	char name[20]; 
 	short damage;
-	char message[256];// ¾È³çÇÏ¼¼¿©.	
+	char message[256];
 };
 #pragma pack(pop)
 

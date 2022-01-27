@@ -44,7 +44,7 @@ int Network::SendMsg(SOCKET sock, char* msg, WORD type)
 	packet.ph.len = strlen(msg) + PACKET_HEADER_SIZE;
 	packet.ph.type = type;
 	memcpy(packet.msg, msg, strlen(msg));
-	// 2번 패킷 전송 : 운영체제 sendbuffer(short바이트), recvbuffer
+	// 2번 패킷 전송 
 	char* pMsg = (char*)&packet;
 	int iSendSize = 0;
 	do {
@@ -83,8 +83,7 @@ int Network::AddUser(SOCKET sock)
 {
 	SOCKADDR_IN clientAddr;
 	int iLen = sizeof(clientAddr);
-	SOCKET clientSock = accept(sock,
-		(sockaddr*)&clientAddr, &iLen);
+	SOCKET clientSock = accept(sock, (sockaddr*)&clientAddr, &iLen);
 	if (clientSock == SOCKET_ERROR)
 	{
 		return -1;
@@ -94,10 +93,7 @@ int Network::AddUser(SOCKET sock)
 		NetUser user;
 		user.set(clientSock, clientAddr);
 		userlist.push_back(user);
-		std::cout
-			<< "ip =" << inet_ntoa(clientAddr.sin_addr)
-			<< "port =" << ntohs(clientAddr.sin_port)
-			<< "  " << std::endl;
+		std::cout << "ip =" << inet_ntoa(clientAddr.sin_addr) << "port =" << ntohs(clientAddr.sin_port) << "  " << std::endl;
 		std::cout << userlist.size() << " 명 접속중.." << std::endl;
 	}
 	return 1;

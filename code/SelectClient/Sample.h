@@ -1,6 +1,7 @@
 #pragma once
 #include "Core.h"
 #include "AsyncSelect.h"
+
 class Sample : public Core
 {
 	AsyncSelect	m_Net;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Network.h"
 #define NETWORK_MSG WM_USER+1
+
 class AsyncSelect :   public Network
 {
 public:

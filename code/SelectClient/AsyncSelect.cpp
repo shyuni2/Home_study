@@ -1,5 +1,6 @@
 #include "AsyncSelect.h"
-bool    AsyncSelect::Connect(HWND hWnd, int protocol, int iport, const char* ip)
+
+bool AsyncSelect::Connect(HWND hWnd, int protocol, int iport, const char* ip)
 {
 	m_Sock = socket(AF_INET, protocol, 0);
 	SOCKADDR_IN sa;
