@@ -9,6 +9,7 @@ LRESULT  CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     g_pWindow->MsgProc(hWnd, msg, wParam, lParam);
     switch (msg)
     {
+  
     case WM_DESTROY:
     {
         PostQuitMessage(0);// WM_QUIT

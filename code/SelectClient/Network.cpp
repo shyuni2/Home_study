@@ -112,25 +112,6 @@ int Network::AddUser(SOCKET sock)
 		NetUser user;
 		user.set(clientSock, clientAddr);
 		userlist.push_back(user);
-		Broadcast(user);
-	}
-	return 1;
-}
-
-int Network::Broadcast(NetUser& user)
-{
-	if (user.m_PacketPool.size() > 0)
-	{
-		list<Packet>::iterator iter;
-		for (iter = user.m_PacketPool.begin(); iter != user.m_PacketPool.end(); )
-		{
-			int ret = SendData(user.m_Sock, (*iter).m_uPacket);
-			if (ret <= 0)
-			{
-				user.m_Connect = false;
-			}
-			iter = user.m_PacketPool.erase(iter);
-		}
 	}
 	return 1;
 }

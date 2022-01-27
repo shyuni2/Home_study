@@ -17,6 +17,5 @@ public:
 	int SendData(SOCKET sock, UPACKET& packet);
 	int AddUser(SOCKET sock);
 	int RecvData(NetUser& user);
-	int Broadcast(NetUser& user);
 };
 
