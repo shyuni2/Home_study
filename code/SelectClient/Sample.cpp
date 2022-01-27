@@ -11,7 +11,7 @@ LRESULT  Sample::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		{
 			char buffer[MAX_PATH] = { 0, };
 			SendMessageA(m_hEdit, WM_GETTEXT, MAX_PATH, (LPARAM)buffer);
-			TPacket tPacket(PACKET_CHAT_MSG);
+			Packet tPacket(PACKET_CHAT_MSG);
 			tPacket << 999 << "ȫ�浿" << (short)50 << buffer;
 			m_Net.SendMsg(m_Net.m_Sock, tPacket.m_uPacket);
 
@@ -51,7 +51,7 @@ bool	Sample::Frame()
 		m_iChatCnt = iChatCnt;
 		SendMessage(m_hListBox, LB_RESETCONTENT, 0, 0);
 
-		std::list<TPacket>::iterator iter;
+		std::list<Packet>::iterator iter;
 		if (m_Net.m_PlayerUser.m_packetPool.size() > 20)
 		{
 			m_Net.m_PlayerUser.m_packetPool.pop_front();
@@ -60,7 +60,7 @@ bool	Sample::Frame()
 			iter != m_Net.m_PlayerUser.m_packetPool.end();
 			iter++)
 		{
-			TChatMsg recvdata;
+			ChatMsg recvdata;
 			ZeroMemory(&recvdata, sizeof(recvdata));
 			(*iter) >> recvdata.index >> recvdata.name
 				>> recvdata.damage >> recvdata.message;

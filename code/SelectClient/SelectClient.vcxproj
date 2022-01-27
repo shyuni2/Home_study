@@ -145,18 +145,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
-    <ClInclude Include="TAsyncSelect.h" />
-    <ClInclude Include="TNetUser.h" />
-    <ClInclude Include="TNetwork.h" />
-    <ClInclude Include="TPacket.h" />
-    <ClInclude Include="TProtocol.h" />
+    <ClInclude Include="AsyncSelect.h" />
+    <ClInclude Include="NetUser.h" />
+    <ClInclude Include="Network.h" />
+    <ClInclude Include="Packet.h" />
+    <ClInclude Include="Protocol.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sample.cpp" />
-    <ClCompile Include="TAsyncSelect.cpp" />
-    <ClCompile Include="TNetUser.cpp" />
-    <ClCompile Include="TNetwork.cpp" />
-    <ClCompile Include="TPacket.cpp" />
+    <ClCompile Include="AsyncSelect.cpp" />
+    <ClCompile Include="NetUser.cpp" />
+    <ClCompile Include="Network.cpp" />
+    <ClCompile Include="Packet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TCoreLib\TCoreLib.vcxproj">

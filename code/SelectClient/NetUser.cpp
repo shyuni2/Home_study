@@ -1,5 +1,5 @@
-#include "TNetUser.h"
-int TNetUser::DispatchRead(char* szRecvBuffer, int iRecvByte)
+#include "NetUser.h"
+int NetUser::DispatchRead(char* szRecvBuffer, int iRecvByte)
 {
 	//p1(m_iPacketPos)  p2(2.1)       pn   (m_ReadPos)
 	//2035 ~ 2038 ~ 22  ~ 50  ~  2028 ~ 2038 ~ 2048 
@@ -25,7 +25,7 @@ int TNetUser::DispatchRead(char* szRecvBuffer, int iRecvByte)
 		if (pPacket->ph.len <= m_iReadPos)
 		{
 			do {
-				TPacket tPacket(pPacket->ph.type);
+				Packet tPacket(pPacket->ph.type);
 				memcpy(&tPacket.m_uPacket,
 					&m_szRecvBuffer[m_iPacketPos],
 					pPacket->ph.len);
@@ -45,7 +45,7 @@ int TNetUser::DispatchRead(char* szRecvBuffer, int iRecvByte)
 	return 1;
 }
 
-void TNetUser::set(SOCKET sock, SOCKADDR_IN addr)
+void NetUser::set(SOCKET sock, SOCKADDR_IN addr)
 {
 	m_bConnect = true;
 	ZeroMemory(m_szRecvBuffer, sizeof(char) * 2048);

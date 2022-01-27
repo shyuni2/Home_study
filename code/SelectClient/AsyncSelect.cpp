@@ -1,5 +1,5 @@
-#include "TAsyncSelect.h"
-bool    TAsyncSelect::Connect(HWND hWnd, int protocol, int iport, const char* ip)
+#include "AsyncSelect.h"
+bool    AsyncSelect::Connect(HWND hWnd, int protocol, int iport, const char* ip)
 {
 	m_Sock = socket(AF_INET, protocol, 0);
 	SOCKADDR_IN sa;
@@ -21,7 +21,7 @@ bool    TAsyncSelect::Connect(HWND hWnd, int protocol, int iport, const char* ip
 	}
 	return true;
 }
-LRESULT  TAsyncSelect::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT  AsyncSelect::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{	

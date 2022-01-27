@@ -1,6 +1,6 @@
-#include "TNetwork.h"
+#include "Network.h"
 
-bool TNetwork::InitNetwork()
+bool Network::InitNetwork()
 {
 	WSADATA wsa;
 	if(WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
@@ -9,7 +9,7 @@ bool TNetwork::InitNetwork()
 	}
 	return true;
 }
-bool TNetwork::InitServer(int protocol, int iport, const char* ip)
+bool Network::InitServer(int protocol, int iport, const char* ip)
 {
 	m_Sock = socket(AF_INET, protocol, 0);
 	SOCKADDR_IN sa;
@@ -30,13 +30,13 @@ bool TNetwork::InitServer(int protocol, int iport, const char* ip)
 	if (iRet == SOCKET_ERROR)  return false;
 	return true;
 }
-bool TNetwork::CloseNetwork()
+bool Network::CloseNetwork()
 {
 	closesocket(m_Sock);	
 	WSACleanup();
 	return true;
 }
-int TNetwork::SendMsg(SOCKET sock, char* msg, WORD type)
+int Network::SendMsg(SOCKET sock, char* msg, WORD type)
 {
 	// 1번 패킷 생성
 	UPACKET packet;
@@ -61,7 +61,7 @@ int TNetwork::SendMsg(SOCKET sock, char* msg, WORD type)
 	} while (iSendSize < packet.ph.len);
 	return iSendSize;
 }
-int TNetwork::SendMsg(SOCKET sock, UPACKET& packet)
+int Network::SendMsg(SOCKET sock, UPACKET& packet)
 {
 	char* pMsg = (char*)&packet;
 	int iSendSize = 0;
@@ -79,7 +79,7 @@ int TNetwork::SendMsg(SOCKET sock, UPACKET& packet)
 	} while (iSendSize < packet.ph.len);
 	return iSendSize;
 }
-int TNetwork::AddUser(SOCKET sock)
+int Network::AddUser(SOCKET sock)
 {
 	SOCKADDR_IN clientAddr;
 	int iLen = sizeof(clientAddr);
@@ -91,7 +91,7 @@ int TNetwork::AddUser(SOCKET sock)
 	}
 	else
 	{
-		TNetUser user;
+		NetUser user;
 		user.set(clientSock, clientAddr);
 		userlist.push_back(user);
 		std::cout
@@ -102,7 +102,7 @@ int TNetwork::AddUser(SOCKET sock)
 	}
 	return 1;
 }
-int TNetwork::RecvUser(TNetUser& user)
+int Network::RecvUser(NetUser& user)
 {
 	char szRecvBuffer[1024] = { 0, };
 	int iRecvByte = recv(user.m_Sock, szRecvBuffer, 1024, 0);

@@ -18,7 +18,4 @@ extern HWND g_hWnd;
 #define GAME_START int WINAPI wWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)  {Sample main;
 #define SIMPLE_WIN() if (main.SetWinClass(hInstance) == FALSE) return 1; if (main.SetWindow() == FALSE) return 1; main.GameRun(); return 1;}
 
-#define GAME_WIN(s,x,y) if (main.SetWinClass(hInstance) == FALSE) return 1;   if (main.SetWindow(L#s, x, y) == FALSE) return 1;   main.GameRun();    return 1;}
-#define GAME_RUN(s,x,y) GAME_START; GAME_WIN(s,x,y);
-
 #define RUN() GAME_START; SIMPLE_WIN();
