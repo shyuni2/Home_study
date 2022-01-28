@@ -8,7 +8,8 @@ LRESULT Sample::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_PAINT:
 	{
-		SendMessageA(m_hUserCount, LB_ADDSTRING, 0, (LPARAM)"승현");// 접속유저 출력
+		// 접속유저 출력
+		SendMessageA(m_hUserCount, LB_ADDSTRING, 0, (LPARAM)"승현");
 	}break;
 	case WM_COMMAND:
 	{
