@@ -51,9 +51,8 @@ bool Collision::IntersecRect(Rect rt1, Rect rt2, Rect* pRect)
 	}
 	return false;
 }
-// 0 :  떨어져 있다.
-// 1 :  안에 있다.
-// 2 :  걸쳐 있다.
+
+// 충돌타입
 CollisionType Collision::RectToRect(Rect rt1, Rect rt2)
 {	
 	Rect rtInterction;
@@ -65,7 +64,6 @@ CollisionType Collision::RectToRect(Rect rt1, Rect rt2)
 	if (rtInterction == rt2) return RECT_OVERLAP;
 	return RECT_IN;
 }
-
 
 bool   Collision::BoxToPoint(Box rt, int x, int y, int z)
 {
@@ -121,9 +119,8 @@ bool   Collision::IntersecBox(Box rt1, Box rt2, Box* pRect)
 	}
 	return false;
 }
-// 0 :  떨어져 있다.
-// 1 :  안에 있다.
-// 2 :  걸쳐 있다.
+
+// 충돌타입
 CollisionType   Collision::BoxToBox(Box rt1, Box rt2)
 {
 	Box rtInterction;

@@ -32,7 +32,7 @@ BOOL Window::SetWinClass(HINSTANCE hInstance)
     wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInstance;
-    wc.lpszClassName = L"Window";
+    wc.lpszClassName = L"Chat";
     wc.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH);
     if (RegisterClass(&wc) == false)
     {
@@ -40,13 +40,12 @@ BOOL Window::SetWinClass(HINSTANCE hInstance)
     }
     return TRUE;
 }
-
 BOOL Window::SetWindow(const WCHAR* Title, int ClientWidth, int ClientHeight)
 {
     RECT rt = { 0,0, ClientWidth , ClientHeight };
     AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, FALSE);
     // 2, 윈도우 생성
-    m_hWnd = CreateWindow(L"Window", Title, WS_OVERLAPPEDWINDOW, 100, 100, 585, 600, NULL, NULL, m_hInstance, NULL);
+    m_hWnd = CreateWindow(L"Chat", Title, WS_OVERLAPPEDWINDOW, 100, 100, 585, 600, NULL, NULL, m_hInstance, NULL);
     if (m_hWnd == NULL)
     {
         return FALSE;

@@ -7,6 +7,7 @@ enum CollisionType
 	RECT_IN,
 	RECT_OVERLAP,
 };
+
 struct Rect
 {
 	Vector2 vMin;
@@ -42,6 +43,7 @@ struct Rect
 		this->size.y = h;
 	}
 };
+
 struct Box
 {
 	Vector3 vMin;
@@ -86,7 +88,7 @@ public:
 	static CollisionType RectToRect(Rect,Rect);
 	static Rect UnionRect(Rect rt1, Rect rt2);
 	static bool IntersecRect(Rect rt1, Rect rt2, Rect* rt);
-	
+public:
 	static bool BoxToPoint(Box rt, int x, int y, int z);
 	static bool BoxToPoint(Box rt, Vector3 v);
 	static CollisionType BoxToBox(Box, Box);

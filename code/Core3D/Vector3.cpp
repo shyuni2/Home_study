@@ -16,6 +16,8 @@ Vector3::Vector3(const Vector3& v)
 	y = v.y;
 	z = v.z;
 }
+
+// 벡터연산
 Vector3 Vector3::operator + (const Vector3& v)
 {
 	Vector3 ret;
@@ -75,6 +77,7 @@ bool Vector3::operator != (const Vector3& v)
 	return true;
 }
 
+// 정규화
 Vector3 Vector3::Normal()
 {
 	Vector3 ret;
@@ -101,7 +104,6 @@ Vector3 Normalize(Vector3& v)
 	ret.z = v.z * length;
 	return ret;
 }
-// 크기
 float Vector3::Length()
 {
 	float ret = x * x + y * y + z*z;
