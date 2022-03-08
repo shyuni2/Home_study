@@ -118,12 +118,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\home\include\Core3D</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include/Core3D</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\home\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>Core3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

@@ -1,6 +1,6 @@
 #pragma once
 #include "Core.h"
-class main : public Core
+class Sample: public Core
 {
 };
 
