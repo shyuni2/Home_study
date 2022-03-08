@@ -21,9 +21,10 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{5289627c-a133-497e-a414-a3a811ec5922}</ProjectGuid>
-    <RootNamespace>CoreServer</RootNamespace>
+    <ProjectGuid>{89662571-438a-489c-9630-0b2c1fc2323f}</ProjectGuid>
+    <RootNamespace>TCoreNet</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>CoreNet</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -78,8 +79,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../../output/debug</OutDir>
-    <IntDir>../../output/debug/CoreServer</IntDir>
+    <OutDir>../../output/Debug/</OutDir>
+    <IntDir>../../output/Debug/CoreNet</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -127,9 +128,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy "*.h" "../../include/CoreServer"
-copy "..\\..\\output\\Debug\\CoreServer.lib" "..\\..\\Lib\\"
-</Command>
+      <Command>copy "*.h" "../../include/CoreNet/"
+copy "..\\..\\output\\Debug\\CoreNet.lib" "..\\..\\Lib\\CoreNet_d.lib"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -150,20 +150,18 @@ copy "..\\..\\output\\Debug\\CoreServer.lib" "..\\..\\Lib\\"
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AsyncSelect.cpp" />
     <ClCompile Include="NetUser.cpp" />
+    <ClCompile Include="Network.cpp" />
     <ClCompile Include="Packet.cpp" />
-    <ClCompile Include="Server.cpp" />
-    <ClCompile Include="ServerObj.cpp" />
-    <ClCompile Include="Thread.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AsyncSelect.h" />
+    <ClInclude Include="NetStd.h" />
     <ClInclude Include="NetUser.h" />
+    <ClInclude Include="Network.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="Protocol.h" />
-    <ClInclude Include="Server.h" />
-    <ClInclude Include="ServerObj.h" />
-    <ClInclude Include="ServerStd.h" />
-    <ClInclude Include="Thread.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

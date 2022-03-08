@@ -1,11 +1,15 @@
 #pragma once
-#include <WinSock2.h>
-#include <windows.h> // 윈도우 헤더랑 윈속헤더랑 순서가 중요함
+#include <winsock2.h>
+#include <windows.h>
 #include <vector>
 #include <list>
 #include <iostream>
 
 #pragma comment	(lib, "ws2_32.lib")
-#pragma comment (lib, "CoreNet.lib")
+#pragma comment	(lib, "winmm.lib")
+#ifdef _DEBUG
+#pragma comment	(lib, "TCoreNet_d.lib")
+#else
+#pragma comment	(lib, "TCoreNet_r.lib")
+#endif
 
-using namespace std;

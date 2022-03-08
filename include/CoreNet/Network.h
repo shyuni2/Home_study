@@ -1,21 +1,21 @@
 #pragma once
 #include "NetUser.h"
 
-// 서버에서 복사한거라 변경사항 있음 
 class Network
 {
 public:
-	SOCKET m_Sock;
+	SOCKET  m_Sock;
 	list<NetUser> userlist;
-	NetUser m_PlayerUser;
+	NetUser   m_PlayerUser;
 public:
 	bool InitNetwork();
-	bool InitServer(int protocol, int iport, const char* ip = nullptr);
-	bool CloseNetwork();
+	bool CloseNetwork();	
+	bool InitServer(int protocol, int iport, const char* ip=nullptr);
 public:
-	// 클라니까 유저추가 함수는 필요x
-	int SendData(SOCKET sock, char* msg, WORD type);
-	int SendData(SOCKET sock, UPACKET& packet);
-	int RecvData(NetUser& user);
+	int SendMsg(SOCKET sock, char* msg, WORD type);
+	int SendMsg(SOCKET sock, UPACKET& packet);
+	int SendMsg(SOCKET sock, char* msg, int iSize, WORD type);
+	int AddUser(SOCKET sock);
+	int RecvUser(NetUser& user);
 };
 

@@ -1,25 +1,53 @@
 #include "Network.h"
 
-// 네트워크 시작
-bool Network::InitNetwork() 
+bool Network::InitNetwork()
 {
 	WSADATA wsa;
-	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+	if(WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 	{
 		return false;
 	}
 	return true;
 }
-// 네트워크 종료
-bool Network::CloseNetwork() 
+bool Network::InitServer(int protocol, int iport, const char* ip)
 {
-	closesocket(m_Sock);
+	m_Sock = socket(AF_INET, protocol, 0);
+
+	int optval = 1;
+	setsockopt(m_Sock, IPPROTO_TCP, TCP_NODELAY, (char*)&optval, sizeof(int));
+
+	SOCKADDR_IN sa;
+	ZeroMemory(&sa, sizeof(sa));
+	sa.sin_family = AF_INET;
+	sa.sin_port = htons(iport);
+	if (ip == nullptr)
+	{
+		sa.sin_addr.s_addr = htonl(INADDR_ANY);
+	}
+	else
+	{
+		sa.sin_addr.s_addr = inet_addr(ip);
+	}
+	int iRet = bind(m_Sock, (sockaddr*)&sa, sizeof(sa));
+	if (iRet == SOCKET_ERROR)
+	{
+		return false;
+	}
+	iRet = listen(m_Sock, SOMAXCONN);
+	if (iRet == SOCKET_ERROR)
+	{
+		return false;
+	}
+	return true;
+}
+bool Network::CloseNetwork()
+{
+	shutdown(m_Sock, SD_SEND);
+	closesocket(m_Sock);	
 	WSACleanup();
 	return true;
 }
-
-// 메세지 보내는 함수 방법 2가지
-int Network::SendData(SOCKET sock, char* msg, WORD type)
+int Network::SendMsg(SOCKET sock, char* msg, WORD type)
 {
 	// 1번 패킷 생성
 	UPACKET packet;
@@ -29,53 +57,92 @@ int Network::SendData(SOCKET sock, char* msg, WORD type)
 	memcpy(packet.msg, msg, strlen(msg));
 	// 2번 패킷 전송 : 운영체제 sendbuffer(short바이트), recvbuffer
 	char* pMsg = (char*)&packet;
-	int SendSize = 0;
+	int iSendSize = 0;
 	do {
-		int SendByte = send(sock, &pMsg[SendSize], packet.ph.len - SendSize, 0);
-		if (SendByte == SOCKET_ERROR)
+		int iSendByte = send(sock, &pMsg[iSendSize], packet.ph.len - iSendSize, 0);
+		if (iSendByte == SOCKET_ERROR)
 		{
 			if (WSAGetLastError() != WSAEWOULDBLOCK)
 			{
 				return -1;
 			}
 		}
-		SendSize += SendByte;
-	} while (SendSize < packet.ph.len);
-	return SendSize;
+		iSendSize += iSendByte;
+	} while (iSendSize < packet.ph.len);
+	return iSendSize;
 }
-int Network::SendData(SOCKET sock, UPACKET& packet)
+int Network::SendMsg(SOCKET sock, char* msg, int iSize,  WORD type)
+{
+	// 1번 패킷 생성
+	UPACKET packet;
+	ZeroMemory(&packet, sizeof(packet));
+	packet.ph.len = iSize + PACKET_HEADER_SIZE;
+	packet.ph.type = type;
+	memcpy(packet.msg, msg, iSize);
+	// 2번 패킷 전송 : 운영체제 sendbuffer(short바이트), recvbuffer
+	char* pMsg = (char*)&packet;
+	int iSendSize = 0;
+	do {
+		int iSendByte = send(sock, &pMsg[iSendSize], packet.ph.len - iSendSize, 0);
+		if (iSendByte == SOCKET_ERROR)
+		{
+			if (WSAGetLastError() != WSAEWOULDBLOCK)
+			{
+				return -1;
+			}
+		}
+		iSendSize += iSendByte;
+	} while (iSendSize < packet.ph.len);
+	return iSendSize;
+}
+int Network::SendMsg(SOCKET sock, UPACKET& packet)
 {
 	char* pMsg = (char*)&packet;
-	int SendSize = 0;
+	int iSendSize = 0;
 	do {
-		int SendByte = send(sock, &pMsg[SendSize], packet.ph.len - SendSize, 0);
-		if (SendByte == SOCKET_ERROR)
+		int iSendByte = send(sock, &pMsg[iSendSize], packet.ph.len - iSendSize, 0);
+		if (iSendByte == SOCKET_ERROR)
 		{
-			// 넌블로킹일때 사용한거라 지금은 필요없음
 			if (WSAGetLastError() != WSAEWOULDBLOCK)
 			{
 				return -1;
 			}
 		}
-		SendSize += SendByte;
-	} while (SendSize < packet.ph.len);
-	return SendSize;
+		iSendSize += iSendByte;
+	} while (iSendSize < packet.ph.len);
+	return iSendSize;
 }
-
-// 메세지 받는 함수
-int Network::RecvData(NetUser& user)
+int Network::AddUser(SOCKET sock)
 {
-	char RecvBuffer[1024] = { 0, };
-	int RecvByte = recv(user.m_Sock, RecvBuffer, 256, 0);
-	if (RecvByte == 0)
-	{
-		closesocket(user.m_Sock);
-		return 0;
-	}
-	if (RecvByte == SOCKET_ERROR)
+	SOCKADDR_IN clientAddr;
+	int iLen = sizeof(clientAddr);
+	SOCKET clientSock = accept(sock, (sockaddr*)&clientAddr, &iLen);
+	if (clientSock == SOCKET_ERROR)
 	{
 		return -1;
 	}
-	user.DispatchRead(RecvBuffer, RecvByte);
+	else
+	{
+		NetUser user;
+		user.set(clientSock, clientAddr);
+		userlist.push_back(user);
+		cout << "ip =" << inet_ntoa(clientAddr.sin_addr) << "port =" << ntohs(clientAddr.sin_port) << "  " << endl;		
+		cout << userlist.size() << " 명 접속중.." << endl;
+	}
+	return 1;
+}
+int Network::RecvUser(NetUser& user)
+{
+	char szRecvBuffer[1024] = { 0, };
+	int iRecvByte = recv(user.m_Sock, szRecvBuffer, 1024, 0);
+	if (iRecvByte == 0)
+	{
+		return 0;
+	}
+	if (iRecvByte == SOCKET_ERROR)
+	{
+		return -1;
+	}
+	user.DispatchRead(szRecvBuffer, iRecvByte);
 	return 1;
 }

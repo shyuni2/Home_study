@@ -32,9 +32,6 @@
     <ClInclude Include="AsyncSelect.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="NetStd.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="NetUser.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -45,6 +42,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Protocol.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="NetStd.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
