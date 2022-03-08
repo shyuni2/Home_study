@@ -18,6 +18,47 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BaseMgr.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="Device.cpp" />
+    <ClCompile Include="DxObj.cpp" />
+    <ClCompile Include="DxState.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Obj2D.cpp" />
+    <ClCompile Include="Obj3D.cpp" />
+    <ClCompile Include="ObjMgr.cpp" />
+    <ClCompile Include="ShaderMgr.cpp" />
+    <ClCompile Include="SoundMgr.cpp" />
+    <ClCompile Include="TextureMgr.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="WriteFont.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BaseMgr.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Core.h" />
+    <ClInclude Include="Device.h" />
+    <ClInclude Include="DxObj.h" />
+    <ClInclude Include="DxState.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Obj2D.h" />
+    <ClInclude Include="Obj3D.h" />
+    <ClInclude Include="ObjMgr.h" />
+    <ClInclude Include="ShaderMgr.h" />
+    <ClInclude Include="SoundMgr.h" />
+    <ClInclude Include="STD.h" />
+    <ClInclude Include="TextureMgr.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Window.h" />
+    <ClInclude Include="WriteFont.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -120,6 +161,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>../../include/dxtk;../../include/fmod;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -149,23 +191,6 @@ copy "..\\..\\output\\debug\\Core3D.lib" "..\\..\\Lib\\"
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Core.cpp" />
-    <ClCompile Include="Device.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="Vector2.cpp" />
-    <ClCompile Include="Vector3.cpp" />
-    <ClCompile Include="Window.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Core.h" />
-    <ClInclude Include="Device.h" />
-    <ClInclude Include="3DStd.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="Vector2.h" />
-    <ClInclude Include="Vector3.h" />
-    <ClInclude Include="Window.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -15,7 +15,7 @@ Vector2::Vector2(const Vector2& v)
 	y = v.y;
 }
 
-// 벡터연산
+// 오버로딩
 Vector2 Vector2::operator + (const Vector2& v)
 {
 	Vector2 ret;
@@ -30,16 +30,31 @@ Vector2 Vector2::operator - (const Vector2& v)
 	ret.y = this->y - v.y;
 	return ret;
 }
+
 Vector2 Vector2::operator * (float fValue)
 {
-	this->x *= fValue;
-	this->y *= fValue;
-	return *this;
+	Vector2 ret;
+	ret.x = this->x * fValue;
+	ret.y = this->y * fValue;	
+	return ret;
 }
 Vector2 Vector2::operator / (float fValue)
 {
-	this->x /= fValue;
-	this->y /= fValue;
+	Vector2 ret;
+	ret.x = this->x / fValue;
+	ret.y = this->y / fValue;
+	return ret;
+}
+Vector2 Vector2::operator += (const Vector2& v)
+{
+	this->x = this->x + v.x;
+	this->y = this->y + v.y;
+	return *this;
+}
+Vector2 Vector2::operator -= (const Vector2& v)
+{
+	this->x = this->x - v.x;
+	this->y = this->y - v.y;
 	return *this;
 }
 bool Vector2::operator == (const Vector2& v)
@@ -65,7 +80,7 @@ bool Vector2::operator != (const Vector2& v)
 	return true;
 }
 
-// 정규화
+// 정규화 
 Vector2 Vector2::Normal()
 {
 	Vector2 ret;
@@ -89,8 +104,17 @@ Vector2 Normalize( Vector2& v)
 	ret.y = v.y * length;
 	return ret;
 }
+
+// 크기
 float Vector2::Length()
 {
 	float ret = x * x + y * y;
 	return sqrt(ret);
+}
+
+// 두벡터의 거리 반환
+float Vector2::Distance(Vector2& v)
+{
+	float fDist = (*this - v).Length();
+	return fDist;
 }

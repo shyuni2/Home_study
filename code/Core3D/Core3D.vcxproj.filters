@@ -1,60 +1,154 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Core.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>base\.cpp</Filter>
     </ClCompile>
     <ClCompile Include="Device.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>base\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="DxObj.cpp">
+      <Filter>base\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="DxState.cpp">
+      <Filter>base\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>base\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>base\.cpp</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>base\.cpp</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="WriteFont.cpp">
+      <Filter>base\.cpp</Filter>
     </ClCompile>
-    <ClCompile Include="Vector3.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="BaseMgr.cpp">
+      <Filter>mgr\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjMgr.cpp">
+      <Filter>mgr\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderMgr.cpp">
+      <Filter>mgr\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundMgr.cpp">
+      <Filter>mgr\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureMgr.cpp">
+      <Filter>mgr\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Obj3D.cpp">
+      <Filter>obj\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Obj2D.cpp">
+      <Filter>obj\.cpp</Filter>
     </ClCompile>
     <ClCompile Include="Collision.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>math\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>math\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>math\.cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="STD.h" />
     <ClInclude Include="Core.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>base\.h</Filter>
     </ClInclude>
     <ClInclude Include="Device.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>base\.h</Filter>
     </ClInclude>
-    <ClInclude Include="3DStd.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="DxObj.h">
+      <Filter>base\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="DxState.h">
+      <Filter>base\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>base\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>base\.h</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>base\.h</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="WriteFont.h">
+      <Filter>base\.h</Filter>
     </ClInclude>
-    <ClInclude Include="Vector3.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="BaseMgr.h">
+      <Filter>mgr\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjMgr.h">
+      <Filter>mgr\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderMgr.h">
+      <Filter>mgr\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundMgr.h">
+      <Filter>mgr\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureMgr.h">
+      <Filter>mgr\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Obj2D.h">
+      <Filter>obj\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Obj3D.h">
+      <Filter>obj\.h</Filter>
     </ClInclude>
     <ClInclude Include="Collision.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>math\.h</Filter>
     </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>math\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>math\.h</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="base">
+      <UniqueIdentifier>{a9df3ad4-64c8-47ca-8a3b-32e588ca35e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mgr">
+      <UniqueIdentifier>{f665df36-753a-4bf3-a7f5-510738d9fb00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{fe0f2209-2466-462f-846c-ebfbbe0773cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="obj">
+      <UniqueIdentifier>{9a7912db-53f6-43e6-b8c1-99da8577e2f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base\.cpp">
+      <UniqueIdentifier>{b0e02e9c-ad1c-4210-97e8-014bb48a698e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base\.h">
+      <UniqueIdentifier>{3443a0d4-25fb-4d42-8ae1-d94002528565}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mgr\.cpp">
+      <UniqueIdentifier>{b5b41a1c-1516-47ef-b1b3-9be1ad3b0ce5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mgr\.h">
+      <UniqueIdentifier>{f5c365f4-2fd7-4dda-9af3-8bcc4c4fd11d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="obj\.cpp">
+      <UniqueIdentifier>{5e03e400-c427-4e97-8ade-6d6994b6ffdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="obj\.h">
+      <UniqueIdentifier>{af1328e1-b6cd-4675-ace4-e6ba91f31f7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math\.cpp">
+      <UniqueIdentifier>{0e82c860-5fe5-40ba-9590-8b60fc5e1035}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math\.h">
+      <UniqueIdentifier>{794b38e5-985c-4787-b36a-b67a711acd90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
