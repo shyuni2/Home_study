@@ -170,7 +170,7 @@
     </Link>
     <PostBuildEvent>
       <Command>copy "*.h" "../../include/Core3D"
-copy "..\\..\\output\\debug\\Core3D.lib" "..\\..\\Lib\\"
+copy "..\\..\\output\\debug\\Core3D.lib" "..\\..\\Lib\\Core3D.lib"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
